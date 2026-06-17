@@ -13,7 +13,7 @@ During these different states, the simulations will vary in a number of computat
 We experimented using a number of different integration tests that represent different kinds of stars.
 Though this particular selection is unlikely to have exercised the full range of MESA's capabilities, the cases were selected to include some of the most computationally intensive.
 
-This work investigates the performance of GCC (gfortran) and the Intel Fortran Compiler (ifx) across several CPU architectures available on the University of Birmingham's BlueBEAR HPC cluster-Ice Lake, Sapphire Rapids, and Emerald Rapids-as well as on Lenovo's LENOX system with Granite Rapids processors.
+This work investigates the performance of GCC (gfortran) and the Intel Fortran Compiler (ifx) across several CPU architectures available on the University of Birmingham's BlueBEAR HPC cluster — Ice Lake, Sapphire Rapids, and Emerald Rapids — as well as on Lenovo's LENOX system with Granite Rapids processors.
 Because MESA does not provide Intel-specific Makefile options by default, a custom build configuration was developed to ensure that both compilers are tested with fair and equivalent optimisation strategies.
 Particular attention was paid to using native builds on each target CPU, ensuring each compiler has full access to platform-specific features such as AVX‑512 variants and tuning heuristics.
 
