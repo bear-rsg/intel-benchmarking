@@ -1,7 +1,7 @@
 # Introduction
 
 High-performance scientific computing relies heavily on the ability of software to efficiently utilise modern CPU architectures.
-As processor generations evolve-introducing wider vector units, expanded core counts, heterogeneous memory hierarchies, and new instruction sets-the performance of large scientific applications is increasingly determined by compiler quality and the effectiveness of architecture-specific optimisations.
+As processor generations evolve — introducing wider vector units, expanded core counts, heterogeneous memory hierarchies, and new instruction sets — the performance of large scientific applications is increasingly determined by compiler quality and the effectiveness of architecture-specific optimisations.
 Benchmarking compilers across multiple CPU families is therefore essential for understanding how scientific workloads behave on modern HPC systems and for guiding users toward best practices.
 
 The Modules for Experiments in Stellar Astrophysics (MESA) code represents a demanding and widely used benchmark for such studies.
