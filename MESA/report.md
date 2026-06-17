@@ -259,3 +259,14 @@ The gfortran profiles also show that moving from the baseline Method 1, which us
 
 The benchmark timing curves are therefore consistent with the profiling data: tests and compiler configurations that APS identifies as more vectorisation-friendly and less stall-prone (`5M_cepheid_blue_loop` with ifx) exhibit the largest benefits from aggressive optimisation and from choosing ifx over gfortran, while tests with high serial fractions (`15M_dynamo`) or limited vectorisation gains (`20M_pre_ms_to_core_collapse` with gfortran) show more modest and sometimes irregular speedups.
 This coherence between timing and profiling results strengthens the overall conclusion that differences in per-test behaviour and compiler gains can be traced back to a small number of underlying hardware and algorithmic factors rather than to noise or measurement artefacts.
+
+<table>
+  <tr>
+    <td><img src="plots/timing_5M_cepheid_blue_loop.png" alt="timing_5M_cepheid_blue_loop"></td>
+    <td><img src="plots/timing_20M_pre_ms_to_core_collapse.png" alt="timing_20M_pre_ms_to_core_collapse"></td>
+  </tr>
+  <tr>
+    <td><img src="plots/timing_15M_dynamo.png" alt="timing_15M_dynamo"></td>
+    <td><img src="plots/timing_wd_stable_h_burn.png" alt="timing_wd_stable_h_burn"></td>
+  </tr>
+</table>
