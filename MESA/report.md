@@ -76,7 +76,7 @@ We are working with the MESA maintainers to make this configuration available up
 
 ### Overview of MESA Integration Tests
 
-Longer MESA integration tests are designed so that the final, critical phase of the evolution can be run in isolation from the the rest of the test, which is regarded as only being necessary to prepare the input for the actual test.
+Longer MESA integration tests are designed so that the final, critical phase of the evolution can be run in isolation from the rest of the test, which is regarded as only being necessary to prepare the input for the actual test.
 Whether a test runner includes the whole simulation or just the final critical part is controlled by the parameter `MESA_SKIP_OPTIONAL`.
 If this parameter is set (to any value), only the final part of the simulation is executed.
 To focus on the most computationally demanding phases and keep overall runtimes manageable, all benchmarks in this study were run with `MESA_SKIP_OPTIONAL` enabled, thereby executing only the critical final stage of each integration test.
