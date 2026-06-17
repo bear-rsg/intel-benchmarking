@@ -240,3 +240,22 @@ On Ice Lake, Sapphire Rapids, and Emerald Rapids, ifx at Methods 3-5 is competit
 On Granite Rapids, gfortran wins across all methods and thread counts, typically by 5-15%.
 This architectural dependence may again be influenced by the different compiler versions on the two clusters.
 The overall performance differences on this test are modest — the best configurations across both compilers are within 10-20% of each other — suggesting that `wd_stable_h_burn` is not strongly sensitive to compiler choice or optimisation flags.
+
+The APS profiles collected on Granite Rapids help to explain the scaling behaviour and provide a cross-check that the timing results are consistent with underlying microarchitectural metrics.
+For ifx, APS reports substantial serial time fractions that increase with thread count — ranging from approximately 5% at 16 threads to 11% at 64 threads for the most parallelisable test (`20M_pre_ms_to_core_collapse`), and from approximately 35-45% at 16 threads to 45-65% at 64 threads for the more serial-dominated tests (`15M_dynamo` and `5M_cepheid_blue_loop`).
+APS also reports non-negligible OpenMP imbalance, typically 5-10% at 16 threads growing to 10-20% at 64 threads.
+Together, these factors naturally lead to sub-linear speedups as thread count increases, since the serial and imbalanced components dominate an increasing fraction of the total wall-clock time.
+Note that APS was unable to report serial time and OpenMP imbalance for gfortran builds, as these metrics rely on the Intel OpenMP runtime's instrumentation interface, which is not available when using the GNU OpenMP runtime.
+
+The APS metrics also reveal differences between tests that help explain their contrasting responses to compiler optimisation.
+For ifx, `5M_cepheid_blue_loop` stands out with the highest vectorisation percentage (approximately 50% on Method 1) and the lowest cache stall fraction (approximately 10%), consistent with its strong response to compiler optimisation.
+By contrast, `20M_pre_ms_to_core_collapse` shows moderate vectorisation (29%) and low cache stalls (12%) on Method 1, but moving to Method 5 actually reduces vectorisation (to 18%) and increases cache stalls (to 21%), consistent with the flat or negative returns from aggressive optimisation observed for this test.
+For `15M_dynamo`, ifx shows high vectorisation on Method 1 (42%) but also the highest serial time fraction (approximately 45-50% of elapsed time), which limits the impact of any per-kernel optimisation gains on total runtime.
+For `wd_stable_h_burn`, ifx shows moderate vectorisation (32%) and low cache stalls (10%) on Method 1, with modest improvements from more aggressive methods.
+
+For gfortran, the APS profiles show much lower vectorisation percentages across all tests (2-15% depending on method, compared to 17-51% for ifx) and typically higher cache stall fractions (roughly 12-31% vs 4-24% for ifx).
+This difference in vectorisation capability is a likely contributor to ifx's overall performance advantage, particularly on tests like `5M_cepheid_blue_loop` where vectorisation-friendly kernels dominate.
+The gfortran profiles also show that moving from the baseline Method 1, which uses a very conservative vectorisation cost model, to Method 4 substantially increases vectorisation on `5M_cepheid_blue_loop` (from 2% to 15%), while the effect is more modest on the other three tests (from roughly 3% to 5-11%), mirroring the benchmark timing patterns where `5M_cepheid_blue_loop` benefits most from aggressive optimisation under gfortran.
+
+The benchmark timing curves are therefore consistent with the profiling data: tests and compiler configurations that APS identifies as more vectorisation-friendly and less stall-prone (`5M_cepheid_blue_loop` with ifx) exhibit the largest benefits from aggressive optimisation and from choosing ifx over gfortran, while tests with high serial fractions (`15M_dynamo`) or limited vectorisation gains (`20M_pre_ms_to_core_collapse` with gfortran) show more modest and sometimes irregular speedups.
+This coherence between timing and profiling results strengthens the overall conclusion that differences in per-test behaviour and compiler gains can be traced back to a small number of underlying hardware and algorithmic factors rather than to noise or measurement artefacts.
