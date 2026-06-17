@@ -17,7 +17,7 @@ This work investigates the performance of GCC (gfortran) and the Intel Fortran C
 Because MESA does not provide Intel-specific Makefile options by default, a custom build configuration was developed to ensure that both compilers are tested with fair and equivalent optimisation strategies.
 Particular attention was paid to using native builds on each target CPU, ensuring each compiler has full access to platform-specific features such as AVX‑512 variants and tuning heuristics.
 
-The goal of this study is to present a transparent, reproducible, and architecture‑aware comparison of compiler performance for MESA across a diverse range of current Intel microarchitectures.
+The goal of this study is to present a transparent, reproducible, and architecture-aware comparison of compiler performance for MESA across a diverse range of current Intel microarchitectures.
 The results aim to guide HPC users, system administrators, and researchers in choosing optimal compiler configurations for scientific workflows on current x86-based platforms.
 
 # Methodology
@@ -130,7 +130,7 @@ Each build of MESA was compiled on the same CPU architecture where the correspon
 This "build native, run native" approach allows each compiler to target the full feature set of the underlying hardware, including microarchitecture-tuned code generation and scheduling heuristics, in those configurations where native tuning is enabled.
 
 For the Intel ifx compiler, the `-xHost` flag was used to enable optimisation for the local host architecture.
-For GCC, the equivalent `-march=native` flag was applied, ensuring automatic selection of architecture‑specific instruction sets and tuning parameters.
+For GCC, the equivalent `-march=native` flag was applied, ensuring automatic selection of architecture-specific instruction sets and tuning parameters.
 
 ### Per-compiler Optimisation Configurations
 
