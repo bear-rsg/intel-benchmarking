@@ -166,7 +166,7 @@ In the results section we compare GCC and Intel ifx across these configurations 
 To ensure that our measurements reflect the cost of the core stellar evolution calculations rather than setup overheads, each integration test was executed in two stages.
 First, we ran the test once with `MESA_SKIP_OPTIONAL` unset to generate all required input and auxiliary files, and discarded this initial wall-clock time.
 We then enabled `MESA_SKIP_OPTIONAL` and executed the test, timing only this final critical evolution phase.
-All reported results are based on these timed runs, so the measured wall-clock times predominantly reflect the most computationally intensive part of the workflow while avoiding contamination from one-off file-creation and setup costs.
+All reported results are based on these timed runs, so the measured wall-clock times predominantly reflect the most computationally intensive part of the workflow while avoiding contamination from one-off file creation and setup costs.
 
 ### OpenMP Parallelism and Thread Counts
 
