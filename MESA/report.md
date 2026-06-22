@@ -147,7 +147,7 @@ This ensured that:
 - both compilers are tested under closely matched levels of optimisation and vectorisation,
 - changing configurations does not rely on manual edits during the benchmarking process.
 
-The five configurations are summarised in the table below (commit hashes refer to the [optimisation-settings repository](https://github.com/bear-rsg/mesa)):
+The five configurations are summarised in the table below; commit hashes correspond to those in the [optimisation-settings repository](https://github.com/bear-rsg/mesa):
 
 | Method # | Commit hash | Description                                                                                                                                                                                                                                                             |
 | -------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
