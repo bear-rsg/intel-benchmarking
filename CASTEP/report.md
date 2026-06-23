@@ -1,0 +1,201 @@
+# Introduction
+
+High-performance scientific computing relies heavily on the ability of software to efficiently utilise modern CPU architectures.
+As processor generations evolve — introducing wider vector units, expanded core counts, heterogeneous memory hierarchies, and new instruction sets — the performance of large scientific applications is increasingly determined by compiler quality and the effectiveness of architecture-specific optimisations.
+Benchmarking compilers across multiple CPU families is therefore essential for understanding how scientific workloads behave on modern HPC systems and for guiding users toward best practices.
+
+CASTEP is a software package to calculate the properties of materials. It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials proprieties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
+The CASTEP tool is frequently used by researchers, and when it it requires HPC scale resources. This makes it an applicable and realistic case study to benchmark the impact of different architectures and compilers.
+When being used on the BlueBEAR HPC in Birmingham the CASTEP executable is normally loaded as a pre-prepared module. Instead we will be building it from source throughout this study.
+CASTEP can be used for multiple types of computation, we treated 5 different types of computation as independent case studies.
+
+This work investigates the performance of GCC (gfortran) and the Intel Fortran Compiler (ifx) across several CPU architectures available on the University of Birmingham's BlueBEAR HPC cluster — Ice Lake, Sapphire Rapids, and Emerald Rapids — as well as on Lenovo's LENOX system with Granite Rapids processors.
+Particular attention was paid to using native builds on each target CPU, these setting give each compiler has full access to platform-specific features such as AVX‑512 variants and tuning heuristics.
+
+The goal of this study is to present a transparent, reproducible, and architecture-aware comparison of compiler performance for MESA across a diverse range of current Intel microarchitectures.
+The results aim to guide HPC users, system administrators, and researchers in choosing optimal compiler configurations for scientific workflows on current x86-based platforms.
+
+
+# Methodology
+
+## Benchmark Platforms
+
+Performance tests were conducted on four Intel CPU architectures:
+
+- **Ice Lake** (BlueBEAR): dual-socket nodes with 2 × 36-core Intel Xeon Platinum 8360Y CPUs (72 cores total).
+- **Sapphire Rapids** (BlueBEAR): dual-socket nodes with 2 × 56-core Intel Xeon Platinum 8480CL CPUs (112 cores total).
+- **Emerald Rapids** (BlueBEAR): dual-socket nodes with 2 × 56-core Intel Xeon Platinum 8570 CPUs (112 cores total).
+- **Granite Rapids** (LENOX): dual-socket nodes with 2 × 128-core Intel Xeon 6 6980P CPUs (256 cores total).
+
+CASTEP is parallelised using distributed-memory (MPI) parallelism. All benchmarks were therefore run on a single compute node per job.
+
+## Compilation Platforms
+
+We compiled the code using two different toolchains, 
+
+The **gfortran** toolchain comprising
+
++ gcc
++ gfortran
++ openMPI
++ openBlas
++ fftw3
+
+and an **ifx** toolchain comprising
+
++ icx
++ ifx
++ mpiifx
++ Intel MKL blas
++ Intel MKL fft
+
+## CASTEP case studies
+
+The 5 case studies tested are
+- Convergence calculations
+- Dispersion calculations
+- Electronic calculations
+- Phonon mode calculation
+- Geometry Optimisation
+
+### Single Point (Convergence & Dispersion)
+
+*The CASTEP Energy task allows you to calculate the total energy of the specified 3D periodic system, as well its physical properties.*
+
+*In addition to the total energy, the forces on atoms are reported at the end of the calculation. A charge density file is also created, allowing you to visualize the spatial distribution of the charge density using the Materials Visualizer. The electronic energies at the Monkhorst-Pack k-points used in the calculation are also reported, so that you can generate a density of states chart during CASTEP analysis.*
+
+*The Energy task is useful for studying the electronic properties of systems for which reliable structural information is available. It can also be used to calculate an equation of state (that is, a pressure-volume and/or energy-volume dependence) for high-symmetry systems with no internal degrees of freedom, as long as the Stress property is specified.*
+
+
+### Spectral (Electronic)
+
+*As well as computing band-structures and densities of states CASTEP has several tools for analysis of the electronic structure including:*
++ Mulliken population analysis
++ Hirshfeld population analysis
++ Electron Localisation Functions (ELF)
+
+*CASTEP employs several electronic solvers. The default solver uses a density mixing (DM) algorithm in which the Kohn-Sham equations are solved for a fixed input density, and then a separate density mixing algorithm is used to evolve the density towards the groundstate.*
+
+*For difficult to converge systems Ensemble Density Functional Theory (EDFT) can be used; this method is extremely robust, but much more computationally demanding than density mixing methods.*
+
+### Phonon
+
+*CASTEP can compute vibrational (phonon) modes for metals and insulators using either of density functional perturbation theory (DFPT) or finite displacements in conjunction with supercells. In addition to the traditional method of a user-specified supercell (a.k.a. the "direct method") CASTEP implements a new method which automatically selects and generates a series of supercells commensurate with the desired phonon wavevector criteria.*
+
+### Geometry Optimisation
+
+*The CASTEP Geometry Optimization task allows you to refine the geometry of a 3D periodic system to obtain a stable structure or polymorph. This is done by performing an iterative process in which the coordinates of the atoms and possibly the cell parameters are adjusted so that the total energy of the structure is minimized.*
+
+*CASTEP geometry optimization is based on reducing the magnitude of calculated forces and stresses until they become smaller than defined convergence tolerances. It is also possible to specify an external stress tensor to model the behavior of the system under tension, compression, shear, and so on. In these cases the internal stress tensor is iterated until it becomes equal to the applied external stress.*
+
+*The process of geometry optimization generally results in a model structure that closely resembles the real structure.*
+
+## Sample models
+
+These were provided by Andrew Morris & Mario Ongkiko.
+They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery material, 24 atoms), CaTiO3 (perovskite, 40 atoms), and MOF-5 (porous framework, 424 atoms). 
+
+
+# Castep Compilation & Optimisation
+
+
+
+CASTEP ships with configuration scripts for both gfortan and intel "out of the box".
+The intel version was hard coded to use the older *ifort*, rather than the newer *ifx*, so that needed to be manually changed.
+
+In both cases the default optimisiation setting was `-O3`, which is already an aggressive optimisation level.
+Unfortunatly `-O3` is a macro rather than a defined c++ term, so it is permitted to have different meanings to the 2 compilers.
+Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
+We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case in ifx to make the baselines consistent. 
+
+
+
+### Native Architecture Optimisation
+
+Each build of CASTEP was compiled on the same CPU architecture where the corresponding benchmark was run.
+This "build native, run native" approach allows each compiler to target the full feature set of the underlying hardware, including microarchitecture-tuned code generation and scheduling heuristics, in those configurations where native tuning is enabled.
+
+For the Intel ifx compiler, the `-xHost` flag was used to enable optimisation for the local host architecture.
+For GCC, the equivalent `-march=native` flag was applied, ensuring automatic selection of architecture-specific instruction sets and tuning parameters.
+
+### Mathematical optimisations
+
+We also test the impact of the use of precise maths or fast maths, making use of the compilation flags `-fp-model=fast` and `-mfpmath=sse`. 
+
+These setting lead us to 3 cases with increasingly aggressive optimisation settings:
+
++ Base case (O3, with portability, and precise maths)
++ Host specific case (O3, targeted to the host machine, with precise maths)
++ Host specific with fast maths (O3, targeted to the host machine, with fast maths)
+
+
+## Benchmark Procedure
+
+
+### Avoiding I/O Interference
+
+We investigated the existence of I/O using vTune and found that there was very little file I/O however the use of MI introduce a significant amount of network I/O. 
+Running CASTEP without MPI could reduce this however it also increases the runtimes to an extent that it wouldn't be used by any serious researchers. 
+
+We added the slurm flags `--nodes=1` and `--exclusive` so that all the tasks were performed on the same node, and that node was not being used simultaneously by other jobs.
+This could reduce the variability of impact of intercommunication network I/O between MPI tasks, but we didn't eliminate it altogether to avoid a case where our findings diverge from any experience of a CASTEP user.
+
+### Node allocation, MPI Parallelism, and Thread Counts
+
+CASTEP employs distributed (MPI) parallelism.
+CASTEP permits the use of shared-memory parallelisation via OpenMP, however we found allocating all core to MPI tasks led to a much better outcome. 
+We therefore set OpenMP threads to 1 throughout.
+Each compiler/architecture combination was benchmarked using the following MPI task counts:
+
+- 16 tasks
+- 24 tasks
+- 32 tasks
+- 48 tasks
+- 64 tasks
+
+These values cover typical HPC core counts while remaining on a single node. We used the node exclusively throughout the simulation, even if not all the cores of the node were utilised, this was to ensure other simultaneous use of the node did not negatively impact the runtimes.
+
+### Repeated Trials and Time Selection
+
+Upon successful completion, CASTEP reports the total time taken for the simulation. This value was retrieved from the output files for each test case and was used as the metric of runtime.
+Since each simulation type was attempted with multiple model file, the times for the multiple models were summed.
+
+To reduce the effect of transient system noise (e.g. inter-task networking), each test and task-count combination was executed three times under otherwise identical conditions.
+For each data point:
+This "best-of-three" strategy mitigates the impact of occasional outliers due to background system activity and provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs.
+
+# Results
+
+In this section we present independent plot of the five CASTEP study types, each is further split int four Intel CPU architectures.
+On each plot 6 different curves are plotted each corresponding to a particular choice of compiler and compiler settings
+Each curve shows the lowest reported runtime from three repeated runs, plotted against a range of MPI tasks.
+
+### Convergence study results
+
+
+
+### Dispersion study results
+
+
+### Electronic study results
+
+
+### Geometry study results
+
+
+### Phonon study results
+
+
+<table>
+  <tr>
+    <td><img src="plots/timing_Convergence.png" alt="timing_Convergence"></td>
+    <td><img src="plots/timing_Dispersion.png" alt="timing_Dispersion"></td>
+  </tr>
+  <tr>
+    <td><img src="plots/timing_Electronic.png" alt="timing_Electronic"></td>
+    <td><img src="plots/timing_Geometry.png" alt="timing_Geometry"></td>
+  </tr>
+  <tr>
+    <td><img src="plots/timing_Phonon.png" alt="timing_Phonon"></td>
+  </tr>
+</table>
