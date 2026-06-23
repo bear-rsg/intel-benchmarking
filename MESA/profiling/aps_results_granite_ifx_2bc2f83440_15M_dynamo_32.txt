@@ -1,0 +1,70 @@
+| Summary information
+|--------------------------------------------------------------------
+  Application                   : star
+  Report creation date          : 2026-06-11 20:43:52
+  Number of ranks               : 64
+  Ranks per node                : 1
+  OpenMP threads number per Rank: 32
+  HW Platform                   : Intel(R) Xeon(R) Processor code named Graniterapids
+  Frequency                     : 2.00 GHz
+  Logical core count per node   : 512
+  Collector type                : Driverless Perf per-process counting
+  Used statistics               : aps_temp_data
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                             602.27 s
+  SP GFLOPS:                                  0.01
+  DP GFLOPS:                                 15.18
+  Average CPU Frequency:                      3.12 GHz
+  IPC Rate:                                   1.82
+  Serial Time:                              255.86 s            42.48% of Elapsed Time
+| The Serial Time of your application is significant. It directly impacts
+| application Elapsed Time and scalability.Explore options for parallelization
+| with Intel(R) Advisor or algorithm or microarchitecture tuning of the serial
+| code with Intel(R) VTune(TM) Profiler.
+  OpenMP Imbalance:                          47.29 s             7.85% of Elapsed Time
+  Physical Core Utilization:                 12.00%
+| The metric is below 80% threshold, which may signal a poor physical CPU cores
+| utilization caused by: load imbalance, threading runtime overhead, contended
+| synchronization, insufficient parallelism, incorrect affinity that utilizes
+| logical cores instead of physical cores. Perform threading analysis with tools
+| like Intel(R) VTune(TM) Profiler to discover why physical cores are
+| underutilized.
+  Average Physical Core Utilization:         30.68 out of 256 Physical Cores
+  Memory Stalls:                             20.10% of Pipeline Slots
+| The metric value can indicate that a significant fraction of execution
+| pipeline slots could be stalled due to demand memory load and stores. See the
+| second level metrics to define if the application is cache- or DRAM-bound and
+| the NUMA efficiency. Use Intel(R) VTune(TM) Profiler Memory Access analysis to
+| review a detailed metric breakdown by memory hierarchy, memory bandwidth
+| information, and correlation by memory objects.
+    Cache Stalls:                            11.90% of Cycles
+    DRAM Stalls:                              1.30% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                             42.20%
+     Instruction Mix:
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :         4291.00 MB (node gnr####)
+           Average resident set size :         4291.00 MB
+       Per rank:
+           Peak resident set size    :         4291.00 MB (rank 0)
+           Average resident set size :         4291.00 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :         7637.00 MB (node gnr####)
+           Average memory consumption :         7637.00 MB
+       Per rank:
+           Peak memory consumption    :         7637.00 MB (rank 0)
+           Average memory consumption :         7637.00 MB
+
+Graphical representation of this data is available in the HTML report: /path/to/home/USER/mesa_ifx_2bc2f83440.1784896/src/star/test_suite/15M_dynamo/aps_report_20260611_205256.html
