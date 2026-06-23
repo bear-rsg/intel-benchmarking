@@ -147,7 +147,7 @@ This ensured that:
 - both compilers are tested under closely matched levels of optimisation and vectorisation,
 - changing configurations does not rely on manual edits during the benchmarking process.
 
-The five configurations are summarised in Table X (commit hashes refer to the optimisation-settings repository [TODO: provide link]):
+The five configurations are summarised in the table below; commit hashes correspond to those in the [optimisation-settings repository](https://github.com/bear-rsg/mesa):
 
 | Method # | Commit hash | Description                                                                                                                                                                                                                                                             |
 | -------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -206,7 +206,7 @@ The fastest configurations achieve speedups ranging from roughly 2x for tests wi
 
 The degree of parallel speedup also depends noticeably on the integration test.
 The APS profiles collected on Granite Rapids show that the tests differ substantially in their serial time fraction, which directly limits scalability. `20M_pre_ms_to_core_collapse` has the lowest serial fraction (approximately 10% of elapsed time at 64 threads) and achieves the best scaling, with speedups of approximately 5x from 8 to 64 threads.
-At the other extreme, `5M_cepheid_blue_loop` has the highest serial fraction (approximately 60% of elapsed time), and its scaling stalls at roughly 2x. `15M_dynamo` also has a high serial fraction (approximately 45–50% of elapsed time), yielding a speedup of roughly 2.5x. `wd_stable_h_burn` falls in between, with a moderate serial fraction (approximately 30% of elapsed time) and a speedup of roughly 4x.
+At the other extreme, `5M_cepheid_blue_loop` has the highest serial fraction (approximately 60% of elapsed time), and its scaling stalls at roughly 2x. `15M_dynamo` also has a high serial fraction (approximately 45–50% of elapsed time), yielding a speedup of roughly 2.3x. `wd_stable_h_burn` falls in between, with a moderate serial fraction (approximately 30% of elapsed time) and a speedup of roughly 3.9x.
 This clean monotonic relationship — higher serial fraction directly predicts worse scaling — indicates that the tests with the lowest serial fractions are able to exploit additional threads most effectively, while those dominated by serial or synchronisation-heavy regions see diminishing returns beyond 16–32 threads.
 
 Compiler choice affects the absolute runtimes but does not fundamentally change these trends.
@@ -223,8 +223,8 @@ For gfortran, the picture is more mixed: on some architectures and tests the mor
 The most striking example is `20M_pre_ms_to_core_collapse` with gfortran on Granite Rapids, where enabling AVX-512 (Method 5) makes performance approximately 20% worse than the baseline `-O2` build, suggesting that the auto-vectorised code for this test's kernels does not benefit from wider vectors and may suffer from increased register pressure or less favourable instruction scheduling.
 
 The test most sensitive to compiler optimisation choices is `5M_cepheid_blue_loop`.
-For both compilers and across all architectures, moving from Method 1 to any of Methods 2–5 produces large and consistent speedups (typically 40–90% for gfortran, 15–25% for ifx).
-This test also shows the largest compiler gap: ifx outperforms gfortran by factors of 1.5–3x depending on configuration.
+For both compilers and across all architectures, moving from Method 1 to any of Methods 2–5 produces large and consistent speedups (typically 40–90% for gfortran, 10–35% for ifx).
+This test also shows the largest compiler gap: ifx outperforms gfortran by factors of 1.3–3x depending on configuration.
 The combination of high sensitivity to optimisation and large compiler differences suggests that `5M_cepheid_blue_loop` contains kernels that are particularly well-suited to the vectorisation and loop transformation capabilities of modern compilers, and that ifx handles these kernels substantially more effectively than gfortran.
 
 For `20M_pre_ms_to_core_collapse` with ifx, Methods 3, 4, and 5 yield broadly similar performance at 16 and 32 threads, with no single method consistently winning across all architectures.
