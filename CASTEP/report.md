@@ -197,13 +197,38 @@ Plotting the results of all
 
 ## Summaries 
 
+
+### Impact of increased MPI tasks
+
+Increasing the number of MPI tasks improved the runtime in almost all cases. However it was never a good scaling ratio never approaching the linear scaling which may have been hoped for.
+This poor scaling is probably linked the earlier vtune investigation which found that there is a high overhead of network IO when CASTEP uses MPI.
+The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear 
+
+
+| CPUArchitecture | Compiler | Average speed increase going from 16 to 64 Tasks |
+| --------------- | -------- |  ----------- | 
+| Ice Lake        | ifx      |  1.75x       |
+| Sapphire Rapids | ifx      |  2.21x       |
+| Emerald Rapids  | ifx      |  2.32x       |
+| Granite Rapids  | ifx      |  2.43x       |
+|
+| Ice Lake        | gfortran |  1.76x       |
+| Sapphire Rapids | gfortran |  2.31x       |
+| Emerald Rapids  | gfortran |  2.53x       |
+| Granite Rapids  | gfortran |  1.98x       |
+
+
+The best MPI parallelisation is achieved on the granite rapids using ifx.
+On all other architectures, MPI parallelisation is worse and the gnu toolchain carries it out better than the intel toolchain.
+
+
 ### Impact of compiler
 
 
 Between the 5 testcases, 3 optimisation levels, 4 cpu architectures, and 5 task-counts, there were 300 combinations tested.
-Of these, ifx performed better in 255 (85.0%) of cases. Gfortran performed better in the remaining 45 (15.0%).
-It won by a ratio of  1.1709 in time (gfortran took 1.17x as much time as ifx).
-It the majority of cases, ifx outperformed gfortran.
+Of these, ifx performed better in 255 (85%) of cases. Gfortran performed better in the remaining 45 (15%).
+Ifx won by a ratio of  1.1709 in time (gfortran took 1.1709x as much time as ifx).
+In the majority of cases, ifx outperformed gfortran.
 
 
 |   All             | ifx Wins | Win Rate | Avg Ratio |
@@ -243,27 +268,3 @@ Ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of 
 The Ice Lakes were where ifx looked less strong, it still won 55/75 (73%) however the average ratio was only 1.0558, indicating far closer times.
 
 Ifx performed strongest with middling numbers of MPI tasks around 24-36, with  the lower count of 16 having closer average ratio, and the higher count of 64 having fewer won cases.
-
-### Impact of increased MPI tasks
-
-Increasing the number of MPI tasks improved the runtime in almost all cases. However it was never a good scaling ratio never approaching the linear scaling which may have been hoped for.
-This poor scaling is probably linked the earlier vtune investigation which found that there is a high overhead of network IO when CASTEP uses MPI.
-The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear 
-
-
-| CPUArchitecture | Compiler | Average speed increase going from 16 to 64 Tasks |
-| --------------- | -------- |  ----------- | 
-| Ice Lake        | ifx      |  1.75x       |
-| Sapphire Rapids | ifx      |  2.21x       |
-| Emerald Rapids  | ifx      |  2.32x       |
-| Granite Rapids  | ifx      |  2.43x       |
-|
-| Ice Lake        | gfortran |  1.76x       |
-| Sapphire Rapids | gfortran |  2.31x       |
-| Emerald Rapids  | gfortran |  2.53x       |
-| Granite Rapids  | gfortran |  1.98x       |
-
-
-The best parallelisation is achieved on the granite rapids using ifx.
-On all other architectures, gfortran is better at parallelisation.
-
