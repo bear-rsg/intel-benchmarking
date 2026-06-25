@@ -137,7 +137,7 @@ This could reduce the variability of the impact of intercommunication network I/
 
 CASTEP employs distributed (MPI) parallelism.
 CASTEP permits the use of shared-memory parallelisation via OpenMP, however we found allocating all core to MPI tasks led to consistently faster runtimes. 
-We therefore set OpenMP threads to 1 throughout.
+We therefore set OpenMP threads to `1` throughout.
 Each compiler/architecture combination was benchmarked using the following MPI task counts:
 
 - 16 tasks
