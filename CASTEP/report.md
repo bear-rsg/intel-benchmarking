@@ -131,7 +131,7 @@ These setting lead us to 3 cases with increasingly aggressive optimisation setti
 We investigated the prevalence of I/O using VTune and found that there was very little file I/O. The use of MPI, however, introduces a significant amount of network I/O. Running CASTEP without MPI could reduce this, but this is not how it is used in practice on BlueBEAR, so we did not pursue that route as it would not reflect realistic use-case runtimes. 
 
 We added the slurm flags `--nodes=1` and `--exclusive` so that all the tasks were performed on the same node, and that node was not being used simultaneously by other jobs.
-This could reduce the variability of impact of intercommunication network I/O between MPI tasks, but we didn't eliminate it altogether to avoid a case where our findings diverge from any experience of a CASTEP user.
+This could reduce the variability of the impact of intercommunication network I/O between MPI tasks, but we didn't eliminate it altogether to avoid a case where our findings diverge from typical CASTEP user experiences.
 
 ### Node allocation, MPI Parallelism, and Thread Counts
 
