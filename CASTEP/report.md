@@ -4,9 +4,8 @@ High-performance scientific computing relies heavily on the ability of software 
 As processor generations evolve — introducing wider vector units, expanded core counts, heterogeneous memory hierarchies, and new instruction sets — the performance of large scientific applications is increasingly determined by compiler quality and the effectiveness of architecture-specific optimisations.
 Benchmarking compilers across multiple CPU families is therefore essential for understanding how scientific workloads behave on modern HPC systems and for guiding users toward best practices.
 
-CASTEP is a software package to calculate the properties of materials. It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials proprieties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
+CASTEP is a software package to calculate the properties of materials ([website](https://www.castep.org), [documentation](https://castep-docs.github.io/castep-docs/)). It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials proprieties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
 The CASTEP tool is frequently used by researchers, and this requires HPC scale resources. This makes it an applicable and realistic case study to benchmark the impact of different architectures and compilers.
-When being used on the BlueBEAR HPC in Birmingham the CASTEP executable is normally loaded as a pre-prepared module. Instead we will be building it from source throughout this study.
 CASTEP can be used for multiple types of computation, we treated 5 different types of computation as independent case studies.
 
 This work investigates the performance of GCC (gfortran) and the Intel Fortran Compiler (ifx) across several CPU architectures available on the University of Birmingham's BlueBEAR HPC cluster — Ice Lake, Sapphire Rapids, and Emerald Rapids — as well as on Lenovo's LENOX system with Granite Rapids processors.
@@ -51,44 +50,13 @@ and an **ifx** toolchain comprising
 ## CASTEP case studies
 
 The 5 case studies tested are
-- Convergence calculations
-- Dispersion calculations
-- Electronic calculations
-- Phonon mode calculation
-- Geometry Optimisation
+- [Convergence calculations](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepenergy.htm)
+- [Dispersion calculations](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepenergy.htm)
+- [Electronic calculations](https://www.castep.org/features/capabilities/electronic-properties)
+- [Phonon mode calculation](https://www.castep.org/features/capabilities/vibrational-spectroscopy)
+- [Geometry Optimisation](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepgeometry.htm)
 
-The following descriptions are quoted directly from the [CASTEP documentation](https://castep-docs.github.io/castep-docs/).
-
-### Single Point (Convergence & Dispersion)
-
-The CASTEP Energy task allows you to calculate the total energy of the specified 3D periodic system, as well its physical properties.
-
-In addition to the total energy, the forces on atoms are reported at the end of the calculation. A charge density file is also created, allowing you to visualize the spatial distribution of the charge density using the Materials Visualizer. The electronic energies at the Monkhorst-Pack k-points used in the calculation are also reported, so that you can generate a density of states chart during CASTEP analysis.
-
-The Energy task is useful for studying the electronic properties of systems for which reliable structural information is available. It can also be used to calculate an equation of state (that is, a pressure-volume and/or energy-volume dependence) for high-symmetry systems with no internal degrees of freedom, as long as the Stress property is specified.
-
-### Spectral (Electronic)
-
-As well as computing band-structures and densities of states CASTEP has several tools for analysis of the electronic structure including:
-+ Mulliken population analysis
-+ Hirshfeld population analysis
-+ Electron Localisation Functions (ELF)
-
-CASTEP employs several electronic solvers. The default solver uses a density mixing (DM) algorithm in which the Kohn-Sham equations are solved for a fixed input density, and then a separate density mixing algorithm is used to evolve the density towards the groundstate.
-
-For difficult to converge systems Ensemble Density Functional Theory (EDFT) can be used; this method is extremely robust, but much more computationally demanding than density mixing methods.
-
-### Phonon
-
-CASTEP can compute vibrational (phonon) modes for metals and insulators using either of density functional perturbation theory (DFPT) or finite displacements in conjunction with supercells. In addition to the traditional method of a user-specified supercell (a.k.a. the "direct method") CASTEP implements a new method which automatically selects and generates a series of supercells commensurate with the desired phonon wavevector criteria.
-
-### Geometry Optimisation
-
-The CASTEP Geometry Optimization task allows you to refine the geometry of a 3D periodic system to obtain a stable structure or polymorph. This is done by performing an iterative process in which the coordinates of the atoms and possibly the cell parameters are adjusted so that the total energy of the structure is minimized.
-
-CASTEP geometry optimization is based on reducing the magnitude of calculated forces and stresses until they become smaller than defined convergence tolerances. It is also possible to specify an external stress tensor to model the behavior of the system under tension, compression, shear, and so on. In these cases the internal stress tensor is iterated until it becomes equal to the applied external stress.
-
-The process of geometry optimization generally results in a model structure that closely resembles the real structure.
+Details of each can be found via the links above to CASTEP documentation.
 
 ## Sample crystal lattice definitions
 
