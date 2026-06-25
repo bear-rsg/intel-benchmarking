@@ -244,7 +244,7 @@ In the majority of cases, ifx outperformed gfortran.
 | -------- | -------- | --------- |
 | 255/300  | 85%      | 1.1709    |
 
-The improvement varied by the different simulations, numbers of task, and CPU architectures.
+The performance advantage of ifx was not uniform, varying across simulations, MPI task counts, and CPU architectures.
 
 | CASTEP simulation  | ifx faster | ifx faster % | avg ratio |
 | ------------------ | -------- | -------- | --------- |
