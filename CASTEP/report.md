@@ -5,7 +5,7 @@ As processor generations evolve — introducing wider vector units, expanded cor
 Benchmarking compilers across multiple CPU families is therefore essential for understanding how scientific workloads behave on modern HPC systems and for guiding users toward best practices.
 
 CASTEP is a software package to calculate the properties of materials. It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials proprieties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
-The CASTEP tool is frequently used by researchers, and when it it requires HPC scale resources. This makes it an applicable and realistic case study to benchmark the impact of different architectures and compilers.
+The CASTEP tool is frequently used by researchers, and this requires HPC scale resources. This makes it an applicable and realistic case study to benchmark the impact of different architectures and compilers.
 When being used on the BlueBEAR HPC in Birmingham the CASTEP executable is normally loaded as a pre-prepared module. Instead we will be building it from source throughout this study.
 CASTEP can be used for multiple types of computation, we treated 5 different types of computation as independent case studies.
 
