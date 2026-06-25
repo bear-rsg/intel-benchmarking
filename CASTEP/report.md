@@ -162,7 +162,7 @@ This "best-of-three" strategy provides an estimate of the best achievable perfor
 
 In this section we present independent plots of the five CASTEP study types. Each plot is further faceted by the four Intel CPU architectures.
 On each plot six different curves are plotted, each corresponding to a particular choice of compiler and compiler settings.
-Each curve shows the lowest reported runtime from three repeated runs, plotted against a range of MPI tasks.
+Each curve shows the shortest reported runtime from three repeated runs, plotted against a range of MPI tasks.
 
 ## Plots
 
