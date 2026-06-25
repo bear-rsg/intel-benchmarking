@@ -67,7 +67,7 @@ They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery mate
 # Castep Compilation & Optimisation
 
 CASTEP ships with configuration scripts for both gfortan and Intel "out of the box".
-The Intel version was hard coded to use the older *ifort*, rather than the newer *ifx*, so we needed to change that manually.
+The shipped Intel scipt uses the older ifort compiler, rather than the newer ifx, so we needed to adjust the script to use ifx for our study.
 
 In both cases the default optimisiation setting was `-O3`, which is already an aggressive optimisation level.
 Unfortunatly `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
