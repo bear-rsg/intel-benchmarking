@@ -237,7 +237,7 @@ Targeting the native archicture improves performance in only 7 out of 16 (44%) o
 Between the 5 test cases, 3 optimisation levels, 4 CPU architectures, and 5 task-counts, there were 300 combinations tested.
 Of these, ifx performed better in 255 (85%) of cases. 
 ifx outperformed gfortran by a ratio of  1.1709 in time (gfortran took 1.1709x as much time as ifx, taking the mean across all test combinations).
-In the majority of cases, ifx outperformed gfortran.
+Overall, these results demonstrate a clear performance advantage for ifx across the tested workloads.
 
 
 | ifx faster | ifx faster % | avg ratio |
