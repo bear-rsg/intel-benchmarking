@@ -61,7 +61,7 @@ Details of each can be found via the links above to CASTEP documentation.
 ## Sample crystal lattice definitions
 
 The cell file of CASTEP contains all of the information about the crystal lattice and the atomic position.
-A sample of cell files were provided by Andrew Morris & Mario Ongkiko.
+A sample of cell files were provided by Professor Andrew Morris & Dr Mario Ongkiko.
 They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery material, 24 atoms), CaTiO3 (perovskite, 40 atoms), and MOF-5 (porous framework, 424 atoms). 
 
 # Castep Compilation & Optimisation
