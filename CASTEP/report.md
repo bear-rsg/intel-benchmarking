@@ -158,11 +158,9 @@ These values cover typical HPC core counts while remaining on a single node. We 
 ### Repeated Trials and Time Selection
 
 Upon successful completion, CASTEP reports the total time taken for the simulation. We retrieved this value from the output files for each test case and used it as the metric of runtime.
-We believed this to be a better metric of time taken than the wall time of the process because it will avoid including process startup time, and any overhead such as setting up and taking down the MPI tasks, thus focusing only on the time taken which can be dependent on the compiler.
+We believed this to be a better metric of time taken than using the wall time of the process. Using CASTEP's reported time will avoid including process startup time, and any overhead such as setting up and taking down the MPI tasks, thus focusing only on the time taken which can be dependent on the compiler.
 
 Since each simulation type was performed using the sample of crystal lattice definitions, the times for the multiple definitions were summed to give a time for the simulation type. This implicitly gives higher weighting to longer running simulations.
-
-***TODO NB: note what other time metrics are included in the CASTEP report and justify the decision to use total time.***
 
 To reduce the effect of transient system noise (e.g. inter-task networking), each test and number of MPI tasks combination was executed three times under otherwise identical conditions.
 For each data point:
