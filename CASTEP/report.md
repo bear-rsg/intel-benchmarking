@@ -245,6 +245,7 @@ The improvement varied by the different simulations, numbers of task, and CPU ar
 | 48                 | 53/60    | 88%      | 1.2260    |
 | 64                 | 47/60    | 78%      | 1.1681    |
 
+ifx performed strongest with between 24-48 MPI tasks, with  the lower count of 16 having closer average ratio, and the higher count of 64 having fewer won cases.
 
 | CPU architecture   | ifx faster | ifx faster % | avg ratio |
 | ------------------ | -------- | -------- | --------- |
@@ -256,4 +257,3 @@ The improvement varied by the different simulations, numbers of task, and CPU ar
 ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases and an average ratio of 1.4891 times the gfortran speed.
 ifx is least strong on The Ice Lakes, though it was still faster in 55/75 (73%) cases, albeit with an average ratio of only 1.0558, indicating far closer times.
 
-ifx performed strongest with between 24-48 MPI tasks, with  the lower count of 16 having closer average ratio, and the higher count of 64 having fewer won cases.
