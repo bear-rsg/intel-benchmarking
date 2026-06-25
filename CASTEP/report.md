@@ -157,7 +157,7 @@ Plotting the results of all
 
 Increasing the number of MPI tasks improved the runtime in almost all cases, although it never approached linear scaling.
 The observed departure from linear scaling may be related to the earlier VTune investigation, which identified significant network I/O overhead when CASTEP uses MPI.
-The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear. 
+Rapid architectures showed greater performance improvements with increasing MPI task counts than Ice Lake systems, although neither approached linear scaling.
 
 
 | CPU Architecture| Compiler | Average speed increase going from 16 to 64 Tasks |
