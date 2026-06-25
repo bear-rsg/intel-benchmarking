@@ -1,0 +1,62 @@
+| Summary information
+|--------------------------------------------------------------------
+  Application                   : star
+  Report creation date          : 2026-06-11 21:58:40
+  Number of ranks               : 64
+  Ranks per node                : 1
+  HW Platform                   : Intel(R) Xeon(R) Processor code named Graniterapids
+  Frequency                     : 2.00 GHz
+  Logical core count per node   : 512
+  Collector type                : Driverless Perf per-process counting
+  Used statistics               : aps_temp_data
+|
+| Your application might underutilize the available logical CPU cores
+| because of insufficient parallel work, blocking on synchronization, or too much I/O. Perform function or source line-level profiling with tools like Intel(R) VTune(TM) Profiler to discover why the CPU is underutilized.
+|
+  Elapsed Time:                             494.50 s
+  SP GFLOPS:                                  0.00
+  DP GFLOPS:                                  4.99
+  Average CPU Frequency:                      3.06 GHz
+  IPC Rate:                                   0.78
+| The IPC value may be too low.
+| This could be caused by issues such as memory stalls, instruction starvation,
+| branch misprediction or long latency instructions.
+| Use Intel(R) VTune(TM) Profiler Microarchitecture Exploration analysis to
+| specify particular reasons of low IPC.
+  Physical Core Utilization:                  5.50%
+| The metric is below 80% threshold, which may signal a poor physical CPU cores
+| utilization caused by: load imbalance, threading runtime overhead, contended
+| synchronization, insufficient parallelism, incorrect affinity that utilizes
+| logical cores instead of physical cores. Perform threading analysis with tools
+| like Intel(R) VTune(TM) Profiler to discover why physical cores are
+| underutilized.
+  Average Physical Core Utilization:         13.98 out of 256 Physical Cores
+  Memory Stalls:                             15.80% of Pipeline Slots
+    Cache Stalls:                            15.50% of Cycles
+    DRAM Stalls:                              0.50% of Cycles
+       Average DRAM Bandwidth:                 N/A
+| Data for this metric is not collected since it requires system-wide
+| performance monitoring. Make sure the sampling driver is properly installed on
+| your system:
+| https://www.intel.com/content/www/us/en/docs/vtune-profiler/user-guide/current/sep-driver.html.
+| Otherwise, enable a driverless Perf-based sampling collection by setting the
+| /proc/sys/kernel/perf_even_paranoid value to 0 or less.
+  Vectorization:                              2.00%
+     Instruction Mix:
+ Memory Footprint:
+ Resident:
+       Per node:
+           Peak resident set size    :         3665.00 MB (node gnr####)
+           Average resident set size :         3665.00 MB
+       Per rank:
+           Peak resident set size    :         3665.00 MB (rank 0)
+           Average resident set size :         3665.00 MB
+ Virtual:
+       Per node:
+           Peak memory consumption    :        17424.00 MB (node gnr####)
+           Average memory consumption :        17424.00 MB
+       Per rank:
+           Peak memory consumption    :        17424.00 MB (rank 0)
+           Average memory consumption :        17424.00 MB
+
+Graphical representation of this data is available in the HTML report: /path/to/home/USER/mesa_gcc_2bc2f83440.1784890/src/star/test_suite/5M_cepheid_blue_loop/aps_report_20260611_220700.html
