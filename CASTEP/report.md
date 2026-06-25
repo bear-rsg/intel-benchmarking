@@ -20,10 +20,10 @@ The results aim to guide HPC users, system administrators, and researchers in ch
 
 Performance tests were conducted on four Intel CPU architectures:
 
-- **Ice Lake** (BlueBEAR): dual-socket nodes with 2 × 36-core Intel Xeon Platinum 8360Y CPUs (72 cores total).
-- **Sapphire Rapids** (BlueBEAR): dual-socket nodes with 2 × 56-core Intel Xeon Platinum 8480CL CPUs (112 cores total).
-- **Emerald Rapids** (BlueBEAR): dual-socket nodes with 2 × 56-core Intel Xeon Platinum 8570 CPUs (112 cores total).
-- **Granite Rapids** (LENOX): dual-socket nodes with 2 × 128-core Intel Xeon 6 6980P CPUs (256 cores total).
++ **Ice Lake** (BlueBEAR): dual-socket nodes with 2 × 36-core Intel Xeon Platinum 8360Y CPUs (72 cores total).
++ **Sapphire Rapids** (BlueBEAR): dual-socket nodes with 2 × 56-core Intel Xeon Platinum 8480CL CPUs (112 cores total).
++ **Emerald Rapids** (BlueBEAR): dual-socket nodes with 2 × 56-core Intel Xeon Platinum 8570 CPUs (112 cores total).
++ **Granite Rapids** (LENOX): dual-socket nodes with 2 × 128-core Intel Xeon 6 6980P CPUs (256 cores total).
 
 CASTEP is parallelised using distributed-memory (MPI) parallelism. All benchmarks were therefore run on a single compute node per job.
 
@@ -50,11 +50,11 @@ and an **ifx** toolchain comprising
 ## CASTEP case studies
 
 The 5 case studies tested are
-- [Convergence calculations](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepenergy.htm)
-- [Dispersion calculations](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepenergy.htm)
-- [Electronic calculations](https://www.castep.org/features/capabilities/electronic-properties)
-- [Phonon mode calculation](https://www.castep.org/features/capabilities/vibrational-spectroscopy)
-- [Geometry Optimisation](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepgeometry.htm)
++ [Convergence calculations](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepenergy.htm)
++ [Dispersion calculations](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepenergy.htm)
++ [Electronic calculations](https://www.castep.org/features/capabilities/electronic-properties)
++ [Phonon mode calculation](https://www.castep.org/features/capabilities/vibrational-spectroscopy)
++ [Geometry Optimisation](https://www.tcm.phy.cam.ac.uk/castep/documentation/WebHelp/content/modules/castep/tskcastepgeometry.htm)
 
 Details of each can be found via the links above to CASTEP documentation.
 
@@ -108,11 +108,11 @@ CASTEP permits the use of shared-memory parallelisation via OpenMP, however we f
 We therefore set OpenMP threads to `1` throughout.
 Each compiler/architecture combination was benchmarked using the following MPI task counts:
 
-- 16 tasks
-- 24 tasks
-- 32 tasks
-- 48 tasks
-- 64 tasks
++ 16 tasks
++ 24 tasks
++ 32 tasks
++ 48 tasks
++ 64 tasks
 
 These values cover typical HPC core counts while remaining on a single node. We used the node exclusively throughout the simulation, even if not all the cores of the node were utilised. This was to ensure other simultaneous use of the node did not negatively impact the runtimes.
 
