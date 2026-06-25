@@ -15,7 +15,6 @@ Particular attention was paid to using native builds on each target CPU, these s
 The goal of this study is to present a transparent, reproducible, and architecture-aware comparison of compiler performance for MESA across a diverse range of current Intel microarchitectures.
 The results aim to guide HPC users, system administrators, and researchers in choosing optimal compiler configurations for scientific workflows on current x86-based platforms.
 
-
 # Methodology
 
 ## Benchmark Platforms
@@ -68,7 +67,6 @@ In addition to the total energy, the forces on atoms are reported at the end of 
 
 The Energy task is useful for studying the electronic properties of systems for which reliable structural information is available. It can also be used to calculate an equation of state (that is, a pressure-volume and/or energy-volume dependence) for high-symmetry systems with no internal degrees of freedom, as long as the Stress property is specified.
 
-
 ### Spectral (Electronic)
 
 As well as computing band-structures and densities of states CASTEP has several tools for analysis of the electronic structure including:
@@ -98,7 +96,6 @@ The cell file of CASTEP contains all of the information about the crystal lattic
 A sample of cell files were provided by Andrew Morris & Mario Ongkiko.
 They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery material, 24 atoms), CaTiO3 (perovskite, 40 atoms), and MOF-5 (porous framework, 424 atoms). 
 
-
 # Castep Compilation & Optimisation
 
 CASTEP ships with configuration scripts for both gfortan and Intel "out of the box".
@@ -108,8 +105,6 @@ In both cases the default optimisiation setting was `-O3`, which is already an a
 Unfortunatly `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
 Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
 We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case for ifx to make the baselines consistent. 
-
-
 
 ### Native Architecture Optimisation
 
@@ -129,9 +124,7 @@ These setting lead us to 3 cases with increasingly aggressive optimisation setti
 + Host specific case (`-O3`, targeted to the host machine and precise maths)
 + Host specific with fast maths (`-O3`, targeted to the host machine and fast maths)
 
-
 ## Benchmark Procedure
-
 
 ### Avoiding I/O Interference
 
@@ -162,8 +155,7 @@ We believed this to be a better metric of time taken than using the wall time of
 
 Since each simulation type was performed using the sample of crystal lattice definitions, the times for the multiple definitions were summed to give a time for the simulation type. This implicitly gives higher weighting to longer running simulations.
 
-To reduce the effect of transient system noise (e.g. inter-task networking), each test and number of MPI tasks combination was executed three times under otherwise identical conditions.
-For each data point:
+To reduce the effect of transient system noise (e.g. inter-task networking), each test and number of MPI tasks combination was executed three times under otherwise identical conditions. We report on the fastest of these three runs.
 This "best-of-three" strategy provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs. We are confident taking this approach, given the absense of outliers across the three runs in all cases.
 
 # Results
@@ -219,13 +211,10 @@ The scaling on the Ice Lake was poorest, Rapid architectures were better, but st
 | Emerald Rapids  | gfortran |  2.53x       |
 | Granite Rapids  | gfortran |  1.98x       |
 
-
 The best MPI parallelisation is achieved on the Granite Rapids using ifx.
 On all other architectures, MPI parallelisation is worse and the GNU toolchain carries it out better than the Intel toolchain.
 
-
 ### Impact of compiler
-
 
 Between the 5 test cases, 3 optimisation levels, 4 CPU architectures, and 5 task-counts, there were 300 combinations tested.
 Of these, ifx performed better in 255 (85%) of cases. 
@@ -263,8 +252,6 @@ The improvement varied by the different simulations, numbers of task, and CPU ar
 | Sapphire Rapids    | 61/75    | 81%      | 1.0588    |
 | Emerald Rapids     | 68/75    | 91%      | 1.0796    |
 | Granite Rapids     | 71/75    | 95%      | 1.4891    |
-
-
 
 ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases and an average ratio of 1.4891 times the gfortran speed.
 ifx is least strong on The Ice Lakes, though it was still faster in 55/75 (73%) cases, albeit with an average ratio of only 1.0558, indicating far closer times.
