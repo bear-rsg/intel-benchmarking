@@ -160,7 +160,7 @@ The observed departure from linear scaling may be related to the earlier VTune i
 Rapid architectures showed greater performance improvements with increasing MPI task counts than Ice Lake systems, although neither approached linear scaling.
 
 
-| CPU Architecture| Compiler | Average speed increase going from 16 to 64 Tasks |
+| CPU Architecture| Compiler | Average speed increase from 16 to 64 tasks |
 | --------------- | -------- |  ----------- | 
 | Ice Lake        | ifx      |  1.75x       |
 | Sapphire Rapids | ifx      |  2.21x       |
