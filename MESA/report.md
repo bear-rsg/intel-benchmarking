@@ -189,7 +189,7 @@ For each data point:
 - we report the minimum wall-clock time observed across the three runs,
 - in practice, the three measurements for a given configuration were found to be very close to each other, suggesting limited performance variability on the dedicated benchmark nodes.
 
-This "best-of-three" strategy mitigates the impact of occasional outliers due to background system activity and provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs.
+This "best-of-three" strategy provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs. We are confident taking this approach, given the low standard deviation across the three runs in all cases.
 
 # Results
 
