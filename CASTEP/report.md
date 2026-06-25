@@ -209,7 +209,7 @@ This poor scaling is probably linked the earlier VTune investigation which found
 The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear. 
 
 
-| CPUArchitecture | Compiler | Average speed increase going from 16 to 64 Tasks |
+| CPU Architecture| Compiler | Average speed increase going from 16 to 64 Tasks |
 | --------------- | -------- |  ----------- | 
 | Ice Lake        | ifx      |  1.75x       |
 | Sapphire Rapids | ifx      |  2.21x       |
