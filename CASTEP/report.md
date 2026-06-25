@@ -162,7 +162,7 @@ Plotting the results of all
 
 ### Impact of increased MPI tasks
 
-Increasing the number of MPI tasks improved the runtime in almost all cases, although never approached linear scaling.
+Increasing the number of MPI tasks improved the runtime in almost all cases, although it never approached linear scaling.
 This poor scaling is probably linked the earlier VTune investigation which found that there is a high overhead of network IO when CASTEP uses MPI.
 The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear. 
 
