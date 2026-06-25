@@ -214,6 +214,24 @@ The scaling on the Ice Lake was poorest, Rapid architectures were better, but st
 The best MPI parallelisation is achieved on the Granite Rapids using ifx.
 On all other architectures, MPI parallelisation is worse and the GNU toolchain carries it out better than the Intel toolchain.
 
+### Impact of targeting the architecture
+
+A summary of impact of choosing the more aggressively optimised compiler options is shown below, for 32 MPI tasks.
+These rows have been scaled against their own `base` case, so a of less than 1.0 for either `host` or `fmath` indicates that they are less performant than the portable case. 
+
+| CPU Architecture | Compiler | `host`|`fmath`|
+|------------------|----------|-------|-------|
+| Ice Lake         | ifx      | 0.938 | 1.031 |
+| Sapphire Rapids  | ifx      | 0.990 | 1.072 |
+| Emerald Rapids   | ifx      | 0.990 | 1.087 |
+| Granite Rapids   | ifx      | 1.010 | 1.096 |
+| Ice Lake         | gfortran | 1.022 | 1.025 |
+| Sapphire Rapids  | gfortran | 0.963 | 0.965 |
+| Emerald Rapids   | gfortran | 0.963 | 0.964 |
+| Granite Rapids   | gfortran | 0.968 | 0.968 |
+
+Targeting the native archicture improves performance in only 7 out of 16 (44%) of instances. The take away from this data is that targeting the host architecture does not offer guaranteed performance improvements over portable with `-O3` optimisation. 
+
 ### Impact of compiler
 
 Between the 5 test cases, 3 optimisation levels, 4 CPU architectures, and 5 task-counts, there were 300 combinations tested.
@@ -254,58 +272,5 @@ ifx performed strongest with between 24-48 MPI tasks, with  the lower count of 1
 | Emerald Rapids     | 68/75    | 91%      | 1.0796    |
 | Granite Rapids     | 71/75    | 95%      | 1.4891    |
 
-ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases and an average ratio of 1.4891 times the gfortran speed.
-ifx is least strong on The Ice Lakes, though it was still faster in 55/75 (73%) cases, albeit with an average ratio of only 1.0558, indicating far closer times.
+ifx is least strong on The Ice Lakes, though it was still faster in 55/75 (73%) cases, albeit with an average ratio of only 1.0558, indicating far closer times. ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases and an average ratio of 1.4891 times the gfortran speed.
 
-### Impact of targeting the architecture
-
-A summary of impact of choosing the more aggressively optimised compiler options is shown below.
-These rows have been scaled against their own `base` case (leading to all base cases having value one).
-The results are varied, with some values even being below 1.0, indicating that targeting the host system could lower the performance in many cases.
-
-
-| CPU Architecture | Compiler | MPI tasks | `base`| `host`|`fmath`|
-|------------------|----------|-----      |-------|-------|-------|
-| Ice Lake         | ifx      | 16        | 1.000 | 0.895 | 0.959 |
-| Ice Lake         | ifx      | 24        | 1.000 | 0.910 | 0.985 |
-| Ice Lake         | ifx      | 32        | 1.000 | 0.938 | 1.031 |
-| Ice Lake         | ifx      | 48        | 1.000 | 0.958 | 1.052 |
-| Ice Lake         | ifx      | 64        | 1.000 | 0.970 | 1.068 |
-| Sapphire Rapids  | ifx      | 16        | 1.000 | 0.992 | 1.063 |
-| Sapphire Rapids  | ifx      | 24        | 1.000 | 0.991 | 1.068 |
-| Sapphire Rapids  | ifx      | 32        | 1.000 | 0.990 | 1.072 |
-| Sapphire Rapids  | ifx      | 48        | 1.000 | 0.990 | 1.068 |
-| Sapphire Rapids  | ifx      | 64        | 1.000 | 0.978 | 1.070 |
-| Emerald Rapids   | ifx      | 16        | 1.000 | 0.992 | 1.072 |
-| Emerald Rapids   | ifx      | 24        | 1.000 | 0.994 | 1.081 |
-| Emerald Rapids   | ifx      | 32        | 1.000 | 0.990 | 1.087 |
-| Emerald Rapids   | ifx      | 48        | 1.000 | 0.991 | 1.086 |
-| Emerald Rapids   | ifx      | 64        | 1.000 | 1.021 | 1.085 |
-| Granite Rapids   | ifx      | 16        | 1.000 | 1.004 | 1.093 |
-| Granite Rapids   | ifx      | 24        | 1.000 | 0.998 | 1.097 |
-| Granite Rapids   | ifx      | 32        | 1.000 | 1.010 | 1.096 |
-| Granite Rapids   | ifx      | 48        | 1.000 | 0.997 | 1.092 |
-| Granite Rapids   | ifx      | 64        | 1.000 | 0.996 | 1.078 |
-|
-| Ice Lake         | gfortran | 16        | 1.000 | 1.022 | 1.020 |
-| Ice Lake         | gfortran | 24        | 1.000 | 1.022 | 1.023 |
-| Ice Lake         | gfortran | 32        | 1.000 | 1.022 | 1.025 |
-| Ice Lake         | gfortran | 48        | 1.000 | 1.019 | 1.022 |
-| Ice Lake         | gfortran | 64        | 1.000 | 1.024 | 1.024 |
-| Sapphire Rapids  | gfortran | 16        | 1.000 | 0.976 | 0.980 |
-| Sapphire Rapids  | gfortran | 24        | 1.000 | 0.966 | 0.965 |
-| Sapphire Rapids  | gfortran | 32        | 1.000 | 0.963 | 0.965 |
-| Sapphire Rapids  | gfortran | 48        | 1.000 | 0.964 | 0.963 |
-| Sapphire Rapids  | gfortran | 64        | 1.000 | 0.956 | 0.957 |
-| Emerald Rapids   | gfortran | 16        | 1.000 | 0.971 | 0.965 |
-| Emerald Rapids   | gfortran | 24        | 1.000 | 0.966 | 0.963 |
-| Emerald Rapids   | gfortran | 32        | 1.000 | 0.963 | 0.964 |
-| Emerald Rapids   | gfortran | 48        | 1.000 | 0.960 | 0.959 |
-| Emerald Rapids   | gfortran | 64        | 1.000 | 0.961 | 0.960 |
-| Granite Rapids   | gfortran | 16        | 1.000 | 0.974 | 0.981 |
-| Granite Rapids   | gfortran | 24        | 1.000 | 0.939 | 0.940 |
-| Granite Rapids   | gfortran | 32        | 1.000 | 0.968 | 0.968 |
-| Granite Rapids   | gfortran | 48        | 1.000 | 0.959 | 0.960 |
-| Granite Rapids   | gfortran | 64        | 1.000 | 0.925 | 0.923 |
-
-The take away from this data is that targeting the host architecture does not offer guaranteed performance improvements over vanilla `-O3` optimisation. 
