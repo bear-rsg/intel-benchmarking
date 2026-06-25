@@ -156,7 +156,7 @@ We believed this to be a better metric of time taken than using the wall time of
 Since each simulation type was performed using the sample of crystal lattice definitions, the times for the multiple definitions were summed to give a time for the simulation type. This implicitly gives higher weighting to longer running simulations.
 
 To reduce the effect of transient system noise (e.g. inter-task networking), each test and number of MPI tasks combination was executed three times under otherwise identical conditions. We report on the fastest of these three runs.
-This "best-of-three" strategy provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs. We are confident taking this approach, given the absense of outliers across the three runs in all cases.
+This "best-of-three" strategy mitigates the impact of occasional outliers due to background system activity and provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs.
 
 # Results
 
