@@ -172,8 +172,7 @@ Rapid architectures showed greater performance improvements with increasing MPI 
 | Emerald Rapids  | gfortran |  2.53x       |
 | Granite Rapids  | gfortran |  1.98x       |
 
-The best MPI parallelisation is achieved on the Granite Rapids using ifx.
-On all other architectures, MPI parallelisation is worse and the GNU toolchain carries it out better than the Intel toolchain.
+Granite Rapids compiled with ifx exhibited the highest speed-up (2.43×) between 16 and 64 MPI tasks. For all other architectures, gfortran delivered comparable or greater MPI scaling than ifx, with the difference being particularly pronounced on Emerald Rapids.
 
 ### Impact of targeting the architecture
 
