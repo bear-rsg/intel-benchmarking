@@ -177,7 +177,7 @@ Granite Rapids compiled with ifx exhibited the highest speed-up (2.43×) between
 ### Impact of targeting the architecture
 
 A summary of the impact of using more aggressively optimised compiler options is shown below for runs using 32 MPI tasks.
-These rows have been scaled against their own `base` case, so a of less than 1.0 for either `host` or `fmath` indicates that they are less performant than the portable case. 
+These results are scaled relative to their respective `base` cases. A value below 1.0 for either `host` or `fmath` therefore indicates a performance regression relative to the portable case.
 
 | CPU Architecture | Compiler | `host`|`fmath`|
 |------------------|----------|-------|-------|
@@ -190,12 +190,12 @@ These rows have been scaled against their own `base` case, so a of less than 1.0
 | Emerald Rapids   | gfortran | 0.963 | 0.964 |
 | Granite Rapids   | gfortran | 0.968 | 0.968 |
 
-Targeting the native archicture improves performance in only 7 out of 16 (44%) of instances. The take away from this data is that targeting the host architecture does not offer guaranteed performance improvements over portable with `-O3` optimisation. 
+Targeting the native architecture improved performance in 7 of 16 instances (44%). These results suggest that architecture-specific optimisation flags provide no consistent advantage over the portable `-O3` configuration and should not be assumed to deliver improved performance.
 
 ### Impact of compiler
 
-Between the 5 test cases, 3 optimisation levels, 4 CPU architectures, and 5 task-counts, there were 300 combinations tested.
-Of these, ifx performed better in 255 (85%) of cases. 
+Across the five test cases, three optimisation levels, four CPU architectures, and five MPI task counts, a total of 300 benchmark configurations were evaluated.
+ifx achieved lower runtimes than gfortran in 255 of the 300 cases (85%).
 Averaged across all benchmark configurations, gfortran required 1.17× the execution time of ifx (mean runtime ratio: 1.1709).
 Overall, these results demonstrate a clear performance advantage for ifx across the tested workloads.
 
