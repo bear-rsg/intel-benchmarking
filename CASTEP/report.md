@@ -140,22 +140,15 @@ Plotting the results of all
 + each with 3 optimisation levels, 
 + across an axis of MPI task numbers.
 
-<table>
-  <tr>
-    <img src="plots/timing_Convergence.png" alt="timing_Convergence">
-  </tr>
-  <tr>
-    <img src="plots/timing_Dispersion.png" alt="timing_Dispersion">
-  </tr>
-  <tr>
-    <img src="plots/timing_Electronic.png" alt="timing_Electronic">
-  </tr>
-    <img src="plots/timing_Geometry.png" alt="timing_Geometry">
-  </tr>
-  <tr>
-    <img src="plots/timing_Phonon.png" alt="timing_Phonon">
-  </tr>
-</table>
+![timing_Convergence](plots/timing_Convergence.png)
+
+![timing_Dispersion](plots/timing_Dispersion.png)
+
+![timing_Electronic](plots/timing_Electronic.png)
+
+![timing_Geomerty](plots/timing_Geometry.png)
+
+![timing_Phonon](plots/timing_Phonon.png)
 
 ## Summaries 
 
