@@ -263,7 +263,7 @@ The improvement varied by the different simulations, numbers of task, and CPU ar
 | 48                 | 53/60    | 88%      | 1.2260    |
 | 64                 | 47/60    | 78%      | 1.1681    |
 
-ifx performed strongest with between 24-48 MPI tasks, with  the lower count of 16 having closer average ratio, and the higher count of 64 having fewer won cases.
+The performance advantage of ifx was most pronounced between 24 and 48 MPI tasks, where the average runtime ratio exceeded 1.22×. At 16 tasks, the performance difference between the compilers was smaller (1.10× on average), while at 64 tasks ifx remained faster overall but won in a smaller proportion of cases (78%).
 
 | CPU architecture   | ifx faster | ifx faster % | avg ratio |
 | ------------------ | -------- | -------- | --------- |
