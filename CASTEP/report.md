@@ -100,13 +100,13 @@ They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery mate
 
 # Castep Compilation & Optimisation
 
-CASTEP ships with configuration scripts for both gfortan and intel "out of the box".
-The intel version was hard coded to use the older *ifort*, rather than the newer *ifx*, so we needed to manually change that.
+CASTEP ships with configuration scripts for both gfortan and Intel "out of the box".
+The Intel version was hard coded to use the older *ifort*, rather than the newer *ifx*, so we needed to change that manually.
 
 In both cases the default optimisiation setting was `-O3`, which is already an aggressive optimisation level.
 Unfortunatly `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
 Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
-We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case in ifx to make the baselines consistent. 
+We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case for ifx to make the baselines consistent. 
 
 
 
@@ -124,9 +124,9 @@ We also test the impact of the use of precise maths or fast maths, making use of
 
 These setting lead us to 3 cases with increasingly aggressive optimisation settings:
 
-+ Base case (O3, with portability, and precise maths)
-+ Host specific case (O3, targeted to the host machine, with precise maths)
-+ Host specific with fast maths (O3, targeted to the host machine, with fast maths)
++ Base case (`-O3`, with portability and precise maths)
++ Host specific case (`-O3`, targeted to the host machine and precise maths)
++ Host specific with fast maths (`-O3`, targeted to the host machine and fast maths)
 
 
 ## Benchmark Procedure
@@ -134,7 +134,7 @@ These setting lead us to 3 cases with increasingly aggressive optimisation setti
 
 ### Avoiding I/O Interference
 
-We investigated the existence of I/O using vTune and found that there was very little file I/O. The use of MPI, however, introduces a significant amount of network I/O. Running CASTEP without MPI could reduce this, however, this is not how it is used in practice on BlueBEAR, so we did not persue that route as it would not reflect real use-case runtimes. 
+We investigated the existence of I/O using VTune and found that there was very little file I/O. The use of MPI, however, introduces a significant amount of network I/O. Running CASTEP without MPI could reduce this, however, this is not how it is used in practice on BlueBEAR, so we did not persue that route as it would not reflect real use-case runtimes. 
 
 We added the slurm flags `--nodes=1` and `--exclusive` so that all the tasks were performed on the same node, and that node was not being used simultaneously by other jobs.
 This could reduce the variability of impact of intercommunication network I/O between MPI tasks, but we didn't eliminate it altogether to avoid a case where our findings diverge from any experience of a CASTEP user.
@@ -142,7 +142,7 @@ This could reduce the variability of impact of intercommunication network I/O be
 ### Node allocation, MPI Parallelism, and Thread Counts
 
 CASTEP employs distributed (MPI) parallelism.
-CASTEP permits the use of shared-memory parallelisation via OpenMP, however we found allocating all core to MPI tasks led to a much better outcome. 
+CASTEP permits the use of shared-memory parallelisation via OpenMP, however we found allocating all core to MPI tasks led to consistently faster runtimes. 
 We therefore set OpenMP threads to 1 throughout.
 Each compiler/architecture combination was benchmarked using the following MPI task counts:
 
@@ -152,21 +152,24 @@ Each compiler/architecture combination was benchmarked using the following MPI t
 - 48 tasks
 - 64 tasks
 
-These values cover typical HPC core counts while remaining on a single node. We used the node exclusively throughout the simulation, even if not all the cores of the node were utilised, this was to ensure other simultaneous use of the node did not negatively impact the runtimes.
+These values cover typical HPC core counts while remaining on a single node. We used the node exclusively throughout the simulation, even if not all the cores of the node were utilised. This was to ensure other simultaneous use of the node did not negatively impact the runtimes.
 
 ### Repeated Trials and Time Selection
 
-Upon successful completion, CASTEP reports the total time taken for the simulation. This value was retrieved from the output files for each test case and was used as the metric of runtime.
-Since each simulation type was attempted with multiple model file, the times for the multiple models were summed.
+Upon successful completion, CASTEP reports the total time taken for the simulation. We retrieved this value from the output files for each test case and used it as the metric of runtime.
 
-To reduce the effect of transient system noise (e.g. inter-task networking), each test and task-count combination was executed three times under otherwise identical conditions.
+***TODO NB: note what other time metrics are included in the CASTEP report and justify the decision to use total time.***
+
+***TODO NB - this sentence needs clarifying (what are model files in CASTEP terminology? are simulation types the different test cases?): Since each simulation type was attempted with multiple model files, the times for the multiple models were summed.***
+
+To reduce the effect of transient system noise (e.g. inter-task networking), each test and number of MPI tasks combination was executed three times under otherwise identical conditions.
 For each data point:
-This "best-of-three" strategy mitigates the impact of occasional outliers due to background system activity and provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs.
+This "best-of-three" strategy provides an estimate of the best achievable performance under typical conditions, rather than an average over all runs. We are confident taking this approach, given the absense of outliers across the three runs in all cases.
 
 # Results
 
-In this section we present independent plot of the five CASTEP study types, each is further split int four Intel CPU architectures.
-On each plot 6 different curves are plotted each corresponding to a particular choice of compiler and compiler settings
+In this section we present independent plots of the five CASTEP study type. Each plots is further faceted by the four Intel CPU architectures.
+On each plot six different curves are plotted, each corresponding to a particular choice of compiler and compiler settings.
 Each curve shows the lowest reported runtime from three repeated runs, plotted against a range of MPI tasks.
 
 ## Plots
@@ -199,9 +202,9 @@ Plotting the results of all
 
 ### Impact of increased MPI tasks
 
-Increasing the number of MPI tasks improved the runtime in almost all cases. However it was never a good scaling ratio never approaching the linear scaling which may have been hoped for.
-This poor scaling is probably linked the earlier vtune investigation which found that there is a high overhead of network IO when CASTEP uses MPI.
-The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear 
+Increasing the number of MPI tasks improved the runtime in almost all cases, although never approached linear scaling.
+This poor scaling is probably linked the earlier VTune investigation which found that there is a high overhead of network IO when CASTEP uses MPI.
+The scaling on the Ice Lake was poorest, Rapid architectures were better, but still far below linear. 
 
 
 | CPUArchitecture | Compiler | Average speed increase going from 16 to 64 Tasks |
@@ -217,26 +220,26 @@ The scaling on the Ice Lake was poorest, Rapid architectures were better, but st
 | Granite Rapids  | gfortran |  1.98x       |
 
 
-The best MPI parallelisation is achieved on the granite rapids using ifx.
-On all other architectures, MPI parallelisation is worse and the gnu toolchain carries it out better than the intel toolchain.
+The best MPI parallelisation is achieved on the Granite Rapids using ifx.
+On all other architectures, MPI parallelisation is worse and the GNU toolchain carries it out better than the Intel toolchain.
 
 
 ### Impact of compiler
 
 
-Between the 5 testcases, 3 optimisation levels, 4 cpu architectures, and 5 task-counts, there were 300 combinations tested.
-Of these, ifx performed better in 255 (85%) of cases. Gfortran performed better in the remaining 45 (15%).
-Ifx won by a ratio of  1.1709 in time (gfortran took 1.1709x as much time as ifx).
+Between the 5 test cases, 3 optimisation levels, 4 CPU architectures, and 5 task-counts, there were 300 combinations tested.
+Of these, ifx performed better in 255 (85%) of cases. 
+ifx outperformed gfortran by a ratio of  1.1709 in time (gfortran took 1.1709x as much time as ifx, taking the mean across all test combinations).
 In the majority of cases, ifx outperformed gfortran.
 
 
-|   All             | ifx Wins | Win Rate | Avg Ratio |
-| ------------------| -------- | -------- | --------- |
-|                   | 255/300  | 85%      | 1.1709    |
+| ifx faster | ifx faster % | avg ratio |
+| -------- | -------- | --------- |
+| 255/300  | 85%      | 1.1709    |
 
-The improvement varied by the different simulations, numbers of task, and cpu architectures.
+The improvement varied by the different simulations, numbers of task, and CPU architectures.
 
-| CASTEP simulation  | ifx Wins | Win Rate | Avg Ratio |
+| CASTEP simulation  | ifx faster | ifx faster % | avg ratio |
 | ------------------ | -------- | -------- | --------- |
 | Convergence        | 59/60    | 98%      | 1.2143    |
 | Dispersion         | 53/60    | 88%      | 1.1908    |
@@ -245,7 +248,7 @@ The improvement varied by the different simulations, numbers of task, and cpu ar
 | Phonon             | 56/60    | 93%      | 1.1939    |
 
 
-| MPI tasks          | ifx Wins | Win Rate | Avg Ratio |
+| MPI tasks          | ifx faster | ifx faster % | avg ratio |
 | ------------------ | -------- | -------- | --------- |
 | 16                 | 50/60    | 83%      | 1.0959    |
 | 24                 | 53/60    | 88%      | 1.1379    |
@@ -254,7 +257,7 @@ The improvement varied by the different simulations, numbers of task, and cpu ar
 | 64                 | 47/60    | 78%      | 1.1681    |
 
 
-| CPU architecture   | ifx Wins | Win Rate | Avg Ratio |
+| CPU architecture   | ifx faster | ifx faster % | avg ratio |
 | ------------------ | -------- | -------- | --------- |
 | Ice Lake           | 55/75    | 73%      | 1.0558    |
 | Sapphire Rapids    | 61/75    | 81%      | 1.0588    |
@@ -263,7 +266,7 @@ The improvement varied by the different simulations, numbers of task, and cpu ar
 
 
 
-Ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases, ifx performed noticeably better with an average ratio of 1.4891*the gfortran speed.
-The Ice Lakes were where ifx looked less strong, it still won 55/75 (73%) however the average ratio was only 1.0558, indicating far closer times.
+ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases and an average ratio of 1.4891 times the gfortran speed.
+ifx is least strong on The Ice Lakes, though it was still faster in 55/75 (73%) cases, albeit with an average ratio of only 1.0558, indicating far closer times.
 
-Ifx performed strongest with middling numbers of MPI tasks around 24-36, with  the lower count of 16 having closer average ratio, and the higher count of 64 having fewer won cases.
+ifx performed strongest with between 24-48 MPI tasks, with  the lower count of 16 having closer average ratio, and the higher count of 64 having fewer won cases.
