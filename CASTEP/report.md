@@ -10,7 +10,7 @@ When being used on the BlueBEAR HPC in Birmingham the CASTEP executable is norma
 CASTEP can be used for multiple types of computation, we treated 5 different types of computation as independent case studies.
 
 This work investigates the performance of GCC (gfortran) and the Intel Fortran Compiler (ifx) across several CPU architectures available on the University of Birmingham's BlueBEAR HPC cluster — Ice Lake, Sapphire Rapids, and Emerald Rapids — as well as on Lenovo's LENOX system with Granite Rapids processors.
-Particular attention was paid to using native builds on each target CPU, these setting give each compiler has full access to platform-specific features such as AVX‑512 variants and tuning heuristics.
+Particular attention was paid to using native builds on each target CPU, these setting give each compiler full access to platform-specific features such as AVX‑512 variants and tuning heuristics.
 
 The goal of this study is to present a transparent, reproducible, and architecture-aware comparison of compiler performance for MESA across a diverse range of current Intel microarchitectures.
 The results aim to guide HPC users, system administrators, and researchers in choosing optimal compiler configurations for scientific workflows on current x86-based platforms.
@@ -58,37 +58,39 @@ The 5 case studies tested are
 - Phonon mode calculation
 - Geometry Optimisation
 
+The following descriptions are quoted directly from the [CASTEP documentation](https://castep-docs.github.io/castep-docs/).
+
 ### Single Point (Convergence & Dispersion)
 
-*The CASTEP Energy task allows you to calculate the total energy of the specified 3D periodic system, as well its physical properties.*
+The CASTEP Energy task allows you to calculate the total energy of the specified 3D periodic system, as well its physical properties.
 
-*In addition to the total energy, the forces on atoms are reported at the end of the calculation. A charge density file is also created, allowing you to visualize the spatial distribution of the charge density using the Materials Visualizer. The electronic energies at the Monkhorst-Pack k-points used in the calculation are also reported, so that you can generate a density of states chart during CASTEP analysis.*
+In addition to the total energy, the forces on atoms are reported at the end of the calculation. A charge density file is also created, allowing you to visualize the spatial distribution of the charge density using the Materials Visualizer. The electronic energies at the Monkhorst-Pack k-points used in the calculation are also reported, so that you can generate a density of states chart during CASTEP analysis.
 
-*The Energy task is useful for studying the electronic properties of systems for which reliable structural information is available. It can also be used to calculate an equation of state (that is, a pressure-volume and/or energy-volume dependence) for high-symmetry systems with no internal degrees of freedom, as long as the Stress property is specified.*
+The Energy task is useful for studying the electronic properties of systems for which reliable structural information is available. It can also be used to calculate an equation of state (that is, a pressure-volume and/or energy-volume dependence) for high-symmetry systems with no internal degrees of freedom, as long as the Stress property is specified.
 
 
 ### Spectral (Electronic)
 
-*As well as computing band-structures and densities of states CASTEP has several tools for analysis of the electronic structure including:*
+As well as computing band-structures and densities of states CASTEP has several tools for analysis of the electronic structure including:
 + Mulliken population analysis
 + Hirshfeld population analysis
 + Electron Localisation Functions (ELF)
 
-*CASTEP employs several electronic solvers. The default solver uses a density mixing (DM) algorithm in which the Kohn-Sham equations are solved for a fixed input density, and then a separate density mixing algorithm is used to evolve the density towards the groundstate.*
+CASTEP employs several electronic solvers. The default solver uses a density mixing (DM) algorithm in which the Kohn-Sham equations are solved for a fixed input density, and then a separate density mixing algorithm is used to evolve the density towards the groundstate.
 
-*For difficult to converge systems Ensemble Density Functional Theory (EDFT) can be used; this method is extremely robust, but much more computationally demanding than density mixing methods.*
+For difficult to converge systems Ensemble Density Functional Theory (EDFT) can be used; this method is extremely robust, but much more computationally demanding than density mixing methods.
 
 ### Phonon
 
-*CASTEP can compute vibrational (phonon) modes for metals and insulators using either of density functional perturbation theory (DFPT) or finite displacements in conjunction with supercells. In addition to the traditional method of a user-specified supercell (a.k.a. the "direct method") CASTEP implements a new method which automatically selects and generates a series of supercells commensurate with the desired phonon wavevector criteria.*
+CASTEP can compute vibrational (phonon) modes for metals and insulators using either of density functional perturbation theory (DFPT) or finite displacements in conjunction with supercells. In addition to the traditional method of a user-specified supercell (a.k.a. the "direct method") CASTEP implements a new method which automatically selects and generates a series of supercells commensurate with the desired phonon wavevector criteria.
 
 ### Geometry Optimisation
 
-*The CASTEP Geometry Optimization task allows you to refine the geometry of a 3D periodic system to obtain a stable structure or polymorph. This is done by performing an iterative process in which the coordinates of the atoms and possibly the cell parameters are adjusted so that the total energy of the structure is minimized.*
+The CASTEP Geometry Optimization task allows you to refine the geometry of a 3D periodic system to obtain a stable structure or polymorph. This is done by performing an iterative process in which the coordinates of the atoms and possibly the cell parameters are adjusted so that the total energy of the structure is minimized.
 
-*CASTEP geometry optimization is based on reducing the magnitude of calculated forces and stresses until they become smaller than defined convergence tolerances. It is also possible to specify an external stress tensor to model the behavior of the system under tension, compression, shear, and so on. In these cases the internal stress tensor is iterated until it becomes equal to the applied external stress.*
+CASTEP geometry optimization is based on reducing the magnitude of calculated forces and stresses until they become smaller than defined convergence tolerances. It is also possible to specify an external stress tensor to model the behavior of the system under tension, compression, shear, and so on. In these cases the internal stress tensor is iterated until it becomes equal to the applied external stress.
 
-*The process of geometry optimization generally results in a model structure that closely resembles the real structure.*
+The process of geometry optimization generally results in a model structure that closely resembles the real structure.
 
 ## Sample models
 
@@ -98,13 +100,11 @@ They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery mate
 
 # Castep Compilation & Optimisation
 
-
-
 CASTEP ships with configuration scripts for both gfortan and intel "out of the box".
-The intel version was hard coded to use the older *ifort*, rather than the newer *ifx*, so that needed to be manually changed.
+The intel version was hard coded to use the older *ifort*, rather than the newer *ifx*, so we needed to manually change that.
 
 In both cases the default optimisiation setting was `-O3`, which is already an aggressive optimisation level.
-Unfortunatly `-O3` is a macro rather than a defined c++ term, so it is permitted to have different meanings to the 2 compilers.
+Unfortunatly `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
 Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
 We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case in ifx to make the baselines consistent. 
 
@@ -134,8 +134,7 @@ These setting lead us to 3 cases with increasingly aggressive optimisation setti
 
 ### Avoiding I/O Interference
 
-We investigated the existence of I/O using vTune and found that there was very little file I/O however the use of MI introduce a significant amount of network I/O. 
-Running CASTEP without MPI could reduce this however it also increases the runtimes to an extent that it wouldn't be used by any serious researchers. 
+We investigated the existence of I/O using vTune and found that there was very little file I/O. The use of MPI, however, introduces a significant amount of network I/O. Running CASTEP without MPI could reduce this, however, this is not how it is used in practice on BlueBEAR, so we did not persue that route as it would not reflect real use-case runtimes. 
 
 We added the slurm flags `--nodes=1` and `--exclusive` so that all the tasks were performed on the same node, and that node was not being used simultaneously by other jobs.
 This could reduce the variability of impact of intercommunication network I/O between MPI tasks, but we didn't eliminate it altogether to avoid a case where our findings diverge from any experience of a CASTEP user.
