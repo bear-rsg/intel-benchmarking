@@ -272,5 +272,6 @@ ifx performed strongest with between 24-48 MPI tasks, with  the lower count of 1
 | Emerald Rapids     | 68/75    | 91%      | 1.0796    |
 | Granite Rapids     | 71/75    | 95%      | 1.4891    |
 
-ifx is least strong on The Ice Lakes, though it was still faster in 55/75 (73%) cases, albeit with an average ratio of only 1.0558, indicating far closer times. ifx excelled on the Granite Rapids, where it performed better in 71/75 (95%) of cases and an average ratio of 1.4891 times the gfortran speed.
+The advantage of ifx varied substantially by processor architecture. The smallest benefit was observed on Ice Lake, where ifx was faster in 55 of 75 cases (73%), with a relatively modest average runtime ratio of 1.056×.
+In contrast, Granite Rapids showed the largest benefit from ifx, which outperformed gfortran in 71 of 75 cases (95%). On this architecture, gfortran required 1.489× the execution time of ifx on average, representing the largest compiler-related performance difference observed in the study.
 
