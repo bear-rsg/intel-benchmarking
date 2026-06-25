@@ -138,7 +138,7 @@ Plotting the results of all
 + 5 tests,
 + each with 2 compilers,
 + each with 3 optimisation levels, 
-+ across a axis of MPI task numbers.
++ across an axis of MPI task numbers.
 
 <table>
   <tr>
