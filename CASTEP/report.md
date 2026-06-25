@@ -176,7 +176,7 @@ Granite Rapids compiled with ifx exhibited the highest speed-up (2.43×) between
 
 ### Impact of targeting the architecture
 
-A summary of impact of choosing the more aggressively optimised compiler options is shown below, for 32 MPI tasks.
+A summary of the impact of using more aggressively optimised compiler options is shown below for runs using 32 MPI tasks.
 These rows have been scaled against their own `base` case, so a of less than 1.0 for either `host` or `fmath` indicates that they are less performant than the portable case. 
 
 | CPU Architecture | Compiler | `host`|`fmath`|
