@@ -4,14 +4,14 @@ High-performance scientific computing relies heavily on the ability of software 
 As processor generations evolve — introducing wider vector units, expanded core counts, heterogeneous memory hierarchies, and new instruction sets — the performance of large scientific applications is increasingly determined by compiler quality and the effectiveness of architecture-specific optimisations.
 Benchmarking compilers across multiple CPU families is therefore essential for understanding how scientific workloads behave on modern HPC systems and for guiding users toward best practices.
 
-CASTEP is a software package to calculate the properties of materials ([website](https://www.castep.org), [documentation](https://castep-docs.github.io/castep-docs/)). It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials proprieties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
+CASTEP is a software package to calculate the properties of materials ([website](https://www.castep.org), [documentation](https://castep-docs.github.io/castep-docs/)). It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials properties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
 The CASTEP tool is frequently used by researchers, and this requires HPC scale resources. This makes it an applicable and realistic case study to benchmark the impact of different architectures and compilers.
 CASTEP can be used for multiple types of computation, we treated 5 different types of computation as independent case studies.
 
 This work investigates the performance of GCC (gfortran) and the Intel Fortran Compiler (ifx) across several CPU architectures available on the University of Birmingham's BlueBEAR HPC cluster — Ice Lake, Sapphire Rapids, and Emerald Rapids — as well as on Lenovo's LENOX system with Granite Rapids processors.
 Particular attention was paid to using native builds on each target CPU, these setting give each compiler full access to platform-specific features such as AVX‑512 variants and tuning heuristics.
 
-The goal of this study is to present a transparent, reproducible, and architecture-aware comparison of compiler performance for MESA across a diverse range of current Intel microarchitectures.
+The goal of this study is to present a transparent, reproducible, and architecture-aware comparison of compiler performance for CASTEP across a diverse range of current Intel microarchitectures.
 The results aim to guide HPC users, system administrators, and researchers in choosing optimal compiler configurations for scientific workflows on current x86-based platforms.
 
 # Methodology
@@ -29,14 +29,14 @@ CASTEP is parallelised using distributed-memory (MPI) parallelism. All benchmark
 
 ## Compilation Platforms
 
-We compiled the code using two different toolchains, 
+We compiled the code using two different toolchains:
 
 The **gfortran** toolchain comprising
 
 + gcc
 + gfortran
-+ openMPI
-+ openBlas
++ OpenMPI
++ OpenBLAS
 + fftw3
 
 and an **ifx** toolchain comprising
@@ -64,13 +64,13 @@ The cell file of CASTEP contains all of the information about the crystal lattic
 A sample of cell files were provided by Professor Andrew Morris & Dr Mario Ongkiko.
 They include structures for GaAs (semiconductor, 8 atoms), LiFePO4 (battery material, 24 atoms), CaTiO3 (perovskite, 40 atoms), and MOF-5 (porous framework, 424 atoms). 
 
-# Castep Compilation & Optimisation
+# CASTEP Compilation & Optimisation
 
-CASTEP ships with configuration scripts for both gfortan and Intel "out of the box".
-The shipped Intel scipt uses the older ifort compiler, rather than the newer ifx, so we needed to adjust the script to use ifx for our study.
+CASTEP ships with configuration scripts for both gfortran and Intel "out of the box".
+The shipped Intel script uses the older ifort compiler, rather than the newer ifx, so we needed to adjust the script to use ifx for our study.
 
 In both cases the default optimisiation setting was `-O3`, which is already an aggressive optimisation level.
-Unfortunatly `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
+Unfortunately `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
 Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
 We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case for ifx to make the baselines consistent. 
 
@@ -86,7 +86,7 @@ For GCC, the equivalent `-march=native` flag was applied, ensuring automatic sel
 
 We also test the impact of the use of precise maths or fast maths, making use of the compilation flags `-fp-model=fast` and `-mfpmath=sse`. 
 
-These setting lead us to 3 cases with increasingly aggressive optimisation settings:
+These settings lead us to 3 cases with increasingly aggressive optimisation settings:
 
 + Base case (`-O3`, with portability and precise maths)
 + Host specific case (`-O3`, targeted to the host machine and precise maths)
@@ -146,7 +146,7 @@ Plotting the results of all
 
 ![timing_Electronic](plots/timing_Electronic.png)
 
-![timing_Geomerty](plots/timing_Geometry.png)
+![timing_Geometry](plots/timing_Geometry.png)
 
 ![timing_Phonon](plots/timing_Phonon.png)
 
@@ -166,7 +166,6 @@ Rapid architectures showed greater performance improvements with increasing MPI 
 | Sapphire Rapids | ifx      |  2.21x       |
 | Emerald Rapids  | ifx      |  2.32x       |
 | Granite Rapids  | ifx      |  2.43x       |
-|
 | Ice Lake        | gfortran |  1.76x       |
 | Sapphire Rapids | gfortran |  2.31x       |
 | Emerald Rapids  | gfortran |  2.53x       |
