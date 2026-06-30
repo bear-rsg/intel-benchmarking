@@ -14,7 +14,7 @@ We experimented using a number of different integration tests that represent dif
 Though this particular selection is unlikely to have exercised the full range of MESA's capabilities, the cases were selected to include some of the most computationally intensive.
 
 The second application in this study is CASTEP, a complementary benchmark that exercises a different computational regime.
-CASTEP is a software package to calculate the properties of materials ([website](https://www.castep.org), [documentation](https://castep-docs.github.io/castep-docs/)).
+CASTEP is a software package to calculate the properties of materials.
 It is based on quantum mechanics, in a form known as density functional theory, and can simulate a wide range of materials properties including energetics, structure at the atomic level, vibrational properties, and many experimental characterisation methods, such as infra-red and Raman spectra, NMR, and core-level spectra.
 The CASTEP tool is frequently used by researchers, and this requires HPC scale resources, making it an applicable and realistic case study to benchmark the impact of different architectures and compilers.
 CASTEP can be used for multiple types of computation; we treated five different types of computation as independent case studies.
