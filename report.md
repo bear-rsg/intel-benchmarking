@@ -321,7 +321,7 @@ Compiler choice affects the absolute runtimes but does not fundamentally change 
 Across all 320 configurations (four architectures x four tests x five methods x four thread counts), ifx is faster than gfortran in approximately 72% of cases, with an average speed advantage of roughly 24%.
 However, the margin is highly test-dependent. On `5M_cepheid_blue_loop`, ifx is faster in every configuration by a wide margin (73% faster on average); even the most aggressively optimised gfortran build (Method 5) is slower than the baseline ifx build (Method 1).
 On `20M_pre_ms_to_core_collapse`, ifx is faster on 84% of configurations. On `15M_dynamo`, ifx is faster on 71% of configurations but the average advantage is only about 6%, and at higher thread counts gfortran often matches or slightly exceeds ifx.
-On `wd_stable_h_burn`, gfortran wins 65% of configurations, particularly at higher thread counts, though ifx becomes more competitive at lower thread counts and with more aggressive optimisation flags.
+On `wd_stable_h_burn`, gfortran is faster on 65% of configurations, particularly at higher thread counts, though ifx becomes more competitive at lower thread counts and with more aggressive optimisation flags.
 Overall, both compilers are capable of exploiting the available hardware parallelism, but ifx extracts somewhat more per-core performance on average, with the notable exception of `wd_stable_h_burn` where gfortran holds an edge.
 
 The five optimisation configurations, which move from a conservative `-O2` baseline to `-O3` with fast-math and explicit AVX-512, have uneven and sometimes counter-intuitive impact across tests, architectures, and compilers.
