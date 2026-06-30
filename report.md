@@ -307,6 +307,17 @@ For each combination of test case, architecture, compiler, and thread count, we 
 All results correspond to native builds compiled on the same architecture where they were executed, using the common MESA configuration and compiler flags described earlier.
 The discussion focuses primarily on the 16- and 32-thread configurations, which represent the practical sweet spot for these benchmarks; at 64 threads the scaling curves have typically flattened, and the relative ordering between configurations can become less representative of the regime most users would employ.
 
+<table>
+  <tr>
+    <td><img src="MESA/plots/timing_5M_cepheid_blue_loop.png" alt="timing_5M_cepheid_blue_loop"></td>
+    <td><img src="MESA/plots/timing_20M_pre_ms_to_core_collapse.png" alt="timing_20M_pre_ms_to_core_collapse"></td>
+  </tr>
+  <tr>
+    <td><img src="MESA/plots/timing_15M_dynamo.png" alt="timing_15M_dynamo"></td>
+    <td><img src="MESA/plots/timing_wd_stable_h_burn.png" alt="timing_wd_stable_h_burn"></td>
+  </tr>
+</table>
+
 Across all architectures and tests, we observe broadly similar qualitative scaling behaviour.
 For both compilers, increasing the number of OpenMP threads from 8 to 64 reduces the wall-clock time substantially, but the speedups are consistently sub-linear.
 The step from 8 to 16 threads captures the largest relative gain, with diminishing returns at each subsequent doubling.
@@ -367,17 +378,6 @@ The gfortran profiles also show that moving from the baseline Method 1, which us
 
 The benchmark timing curves are therefore consistent with the profiling data: tests and compiler configurations that APS identifies as more vectorisation-friendly and less stall-prone (`5M_cepheid_blue_loop` with ifx) exhibit the largest benefits from aggressive optimisation and from choosing ifx over gfortran, while tests with high serial fractions (`15M_dynamo`) or limited vectorisation gains (`20M_pre_ms_to_core_collapse` with gfortran) show more modest and sometimes irregular speedups.
 This coherence between timing and profiling results strengthens the overall conclusion that differences in per-test behaviour and compiler gains can be traced back to a small number of underlying hardware and algorithmic factors rather than to noise or measurement artefacts.
-
-<table>
-  <tr>
-    <td><img src="MESA/plots/timing_5M_cepheid_blue_loop.png" alt="timing_5M_cepheid_blue_loop"></td>
-    <td><img src="MESA/plots/timing_20M_pre_ms_to_core_collapse.png" alt="timing_20M_pre_ms_to_core_collapse"></td>
-  </tr>
-  <tr>
-    <td><img src="MESA/plots/timing_15M_dynamo.png" alt="timing_15M_dynamo"></td>
-    <td><img src="MESA/plots/timing_wd_stable_h_burn.png" alt="timing_wd_stable_h_burn"></td>
-  </tr>
-</table>
 
 ## CASTEP Results
 
