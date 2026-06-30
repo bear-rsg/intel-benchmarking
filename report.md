@@ -71,7 +71,7 @@ WITH_PGSTAR=no
 ```
 
 MESA itself is written primarily in Fortran and uses OpenMP for intra-node parallelism.
-Because MESA does not include Intel-targeted build rules by default, a new Makefile configuration was created for the Intel ifx compiler.
+Because MESA does not include Intel-targeted build rules by default, a new Makefile configuration was created for the ifx compiler.
 This ensured:
 
 - correct handling of Intel Fortran syntax and modules,
@@ -135,14 +135,14 @@ We began from a common baseline configuration and then explored a small set of p
 Each build of MESA was compiled on the same CPU architecture where the corresponding benchmark was run.
 This "build native, run native" approach allows each compiler to target the full feature set of the underlying hardware, including microarchitecture-tuned code generation and scheduling heuristics, in those configurations where native tuning is enabled.
 
-For the Intel ifx compiler, the `-xHost` flag was used to enable optimisation for the local host architecture.
+For ifx, the `-xHost` flag was used to enable optimisation for the local host architecture.
 For GCC, the equivalent `-march=native` flag was applied, ensuring automatic selection of architecture-specific instruction sets and tuning parameters.
 
 #### Per-compiler Optimisation Configurations
 
 Out of the box, MESA provides only a `compile-settings-gnu.mk` file, which defines the compilation flags for GCC/gfortran.
 This baseline configuration uses `-O2` with conservative floating-point settings (no fast-math).
-For this study, we created a corresponding `compile-settings-ifx.mk` file for the Intel ifx compiler, designed to mirror the intent of the GNU configuration as closely as possible and then extend it in parallel ways.
+For this study, we created a corresponding `compile-settings-ifx.mk` file for the ifx compiler, designed to mirror the intent of the GNU configuration as closely as possible and then extend it in parallel ways.
 
 For both compilers we evaluated five optimisation configurations, starting from the baseline `-O2` setup and progressively enabling more aggressive code generation, vectorisation, and use of AVX‑512.
 These configurations were managed in a dedicated repository: each configuration corresponds to a specific commit that updates the MESA compile-settings file for the given compiler.
@@ -163,7 +163,7 @@ The five configurations are summarised in the table below; commit hashes corresp
 | 4        | 1b52195     | Upgrade to `-O3` while retaining the previous optimisations, enabling more aggressive inlining and loop transformations.                                                                                                                                                |
 | 5        | e6f5155     | As above, but with AVX‑512 explicitly requested on supported architectures to study the impact of wide vector units.                                                                                                                                                    |
 
-In the results section we compare GCC and Intel ifx across these configurations to disentangle the effects of baseline optimisation level, native tuning, fast-math, and explicit AVX‑512 usage.
+In the results section we compare GCC and ifx across these configurations to disentangle the effects of baseline optimisation level, native tuning, fast-math, and explicit AVX‑512 usage.
 
 ### Benchmark Procedure
 
@@ -245,13 +245,13 @@ The shipped Intel script uses the older ifort compiler, rather than the newer if
 In both cases the default optimisation setting was `-O3`, which is already an aggressive optimisation level.
 Unfortunately `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
 Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
-We therefore needed to adjust the default ifx compiler settings to the combination `-O3 -fp-model=precise` as our base case for ifx to make the baselines consistent.
+We therefore needed to adjust the default ifx settings to the combination `-O3 -fp-model=precise` as our base case for ifx to make the baselines consistent.
 
 #### Native Architecture Optimisation
 
 All CASTEP builds were compiled natively on the target benchmark architecture.
 This ensures each compiler can exploit the full hardware feature set.
-The Intel ifx compiler used `-xHost` to target the local architecture, while GCC used `-march=native` for equivalent architecture-specific instruction selection and tuning.
+The ifx compiler used `-xHost` to target the local architecture, while GCC used `-march=native` for equivalent architecture-specific instruction selection and tuning.
 
 #### Mathematical Optimisations
 
