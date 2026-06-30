@@ -244,7 +244,7 @@ The shipped Intel script uses the older ifort compiler, rather than the newer if
 
 In both cases the default optimisation setting was `-O3`, which is already an aggressive optimisation level.
 Unfortunately `-O3` is a macro rather than a defined C++ term, so it is permitted to have different meanings to the two compilers.
-Crucially `-O3` in ifx means that fast maths is applied, whereas `-O3` in gfortran still uses precise maths.
+Crucially `-O3` in ifx enables relaxed floating-point rules, whereas `-O3` in gfortran maintains strict compliance.
 We therefore needed to adjust the default ifx settings to the combination `-O3 -fp-model=precise` as our base case for ifx to make the baselines consistent.
 
 #### Native Architecture Optimisation
@@ -255,13 +255,13 @@ The ifx compiler used `-xHost` to target the local architecture, while GCC used 
 
 #### Mathematical Optimisations
 
-We also test the impact of the use of precise maths or fast maths, making use of the compilation flags `-fp-model=fast` and `-mfpmath=sse`.
+We also test the impact of relaxed floating-point rules versus standard-compliant arithmetic, making use of the compilation flags `-fp-model=fast` and `-mfpmath=sse`.
 
 These settings lead us to three cases with increasingly aggressive optimisation settings:
 
-- Base case (`-O3`, with portability and precise maths)
-- Host specific case (`-O3`, targeted to the host machine and precise maths)
-- Host specific with fast maths (`-O3`, targeted to the host machine and fast maths)
+- Base case (`-O3`, with portability and strict floating-point compliance)
+- Host specific case (`-O3`, targeted to the host machine with strict compliance)
+- Host specific with fast-math (`-O3`, targeted to the host machine with relaxed floating-point rules)
 
 ### Benchmark Procedure
 
