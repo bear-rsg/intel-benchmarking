@@ -339,7 +339,7 @@ For `20M_pre_ms_to_core_collapse` with ifx, Methods 3, 4, and 5 yield broadly si
 This indicates that once fast-math and native tuning are enabled (Method 3), the additional benefits from `-O3` and explicit AVX-512 are limited for this test.
 With gfortran on this test, the picture is more erratic: on Granite Rapids, Methods 3 and 5 are slower than Method 1 while Method 4 shows a modest improvement, and on other architectures the results vary with no clear trend.
 
-For `15M_dynamo`, ifx wins at 8–32 threads across all architectures, though the margin over gfortran is most pronounced at lower thread counts (up to 25–30% on Emerald and Granite Rapids at 8 threads) and narrows considerably at 32 threads.
+For `15M_dynamo`, ifx is faster than gfortran at 8–32 threads across all architectures, though the margin over gfortran is most pronounced at lower thread counts (up to 25–30% on Emerald and Granite Rapids at 8 threads) and narrows considerably at 32 threads.
 The benefit of moving beyond Method 1 is modest for gfortran (typically up to 10%) and more variable for ifx (typically 10–25%).
 An interesting anomaly is that on Ice Lake, Sapphire Rapids, and Emerald Rapids, the baseline ifx build (Method 1) is slower than every gfortran configuration at 8–32 threads, while on Granite Rapids the baseline ifx build outperforms all gfortran configurations at 8 and 16 threads — possibly reflecting the different compiler versions used on the LENOX cluster (gfortran 14.2.0, ifx 2025.2.1) compared to BlueBEAR (gfortran 13.3.0, ifx 2024.2.0).
 
