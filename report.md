@@ -318,7 +318,7 @@ At the other extreme, `5M_cepheid_blue_loop` has the highest serial fraction (ap
 This clean monotonic relationship — higher serial fraction directly predicts worse scaling — indicates that the tests with the lowest serial fractions are able to exploit additional threads most effectively, while those dominated by serial or synchronisation-heavy regions see diminishing returns beyond 16–32 threads.
 
 Compiler choice affects the absolute runtimes but does not fundamentally change these trends.
-Across all 320 configurations (4 architectures x 4 tests x 5 methods x 4 thread counts), ifx is faster than gfortran in approximately 72% of cases, with an average speed advantage of roughly 24%.
+Across all 320 configurations (four architectures x four tests x five methods x four thread counts), ifx is faster than gfortran in approximately 72% of cases, with an average speed advantage of roughly 24%.
 However, the margin is highly test-dependent. On `5M_cepheid_blue_loop`, ifx wins every configuration by a wide margin (73% faster on average); even the most aggressively optimised gfortran build (Method 5) is slower than the baseline ifx build (Method 1).
 On `20M_pre_ms_to_core_collapse`, ifx wins 84% of configurations. On `15M_dynamo`, ifx wins 71% of configurations but the average advantage is only about 6%, and at higher thread counts gfortran often matches or slightly exceeds ifx.
 On `wd_stable_h_burn`, gfortran wins 65% of configurations, particularly at higher thread counts, though ifx becomes more competitive at lower thread counts and with more aggressive optimisation flags.
