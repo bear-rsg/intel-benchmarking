@@ -487,3 +487,9 @@ The performance advantage of ifx was most pronounced between 24 and 48 MPI tasks
 
 The advantage of ifx varied substantially by processor architecture. The smallest benefit was observed on Ice Lake, where ifx was faster in 55 of 75 cases (73%), with a relatively modest average runtime ratio of 1.056×.
 In contrast, Granite Rapids showed the largest benefit from ifx, which outperformed gfortran in 71 of 75 cases (95%). On this architecture, gfortran required 1.489× the execution time of ifx on average, representing the largest compiler-related performance difference observed in the study.
+
+# Conclusions
+
+This study compared the performance of gfortran and ifx across two distinct scientific codes — MESA and CASTEP — on four generations of Intel Xeon processors.
+Across both applications, ifx delivered lower runtimes than gfortran in the majority of configurations, with the advantage being most pronounced on the newer Rapid-series architectures, particularly for CASTEP.
+The benefits of aggressive compiler optimisation flags were inconsistent and highly dependent on the specific test case, architecture, and compiler, suggesting that users should evaluate optimisation strategies in the context of their own workloads rather than assuming that more aggressive settings will always yield better performance.
